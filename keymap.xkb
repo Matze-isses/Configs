@@ -1213,7 +1213,7 @@ xkb_symbols "(unnamed)" {
         symbols[Group1]= [               i,               I ]
     };
     key <AD09> {
-        type= "FOUR_LEVEL_SEMIALPHABETIC",
+        type= "CTRL+ALT",
         symbols[Group1]= [               o,               O,                U000F6,               U000D6, o]
     };
     key <AD10> {
