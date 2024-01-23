@@ -1,0 +1,48 @@
+
+window {
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0.9;
+    background-color: #232323;
+}
+
+#input {
+    margin: 5px;
+    color: #f8fbfc;
+    border-color: #043493;
+    background-color: #3a3a3a;
+
+    border-radius: 15px 15px 3px 3px;
+    border-width: 2px;
+}
+
+#inner-box {
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #3a3a3a;
+}
+
+#outer-box {
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #424c5a;
+    opacity: 0.9;
+    background-color: #232323;
+}
+
+#scroll {
+    margin: 5px;
+    border-radius: 3px 3px 15px 15px;
+    border-color: #043493;
+    border-style: solid;
+    border-width: 2px;
+    border-width: 2px;
+    background-color: #3a3a3a;
+}
+
+#text {
+    margin: 2px;
+    font-family: cousine nerd font mono;
+    color: #f8fbfc;
+}
