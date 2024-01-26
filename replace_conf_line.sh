@@ -26,4 +26,3 @@ fi
 # Replace the line
 awk -v ln="$LINE_NUM" -v new_line="$NEW_LINE" 'NR == ln {print new_line; next} {print}' "$FILE_PATH" > tmpfile && mv tmpfile "$FILE_PATH"
 
-echo "Line $LINE_NUM in $FILE_PATH replaced with the new content."
