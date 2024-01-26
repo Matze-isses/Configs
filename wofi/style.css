@@ -44,5 +44,6 @@ window {
 #text {
     margin: 2px;
     font-family: cousine nerd font mono;
-    color: #f8fbfc;
+    color: --wofi-color0;
+    background-color: --wofi-color0;
 }
