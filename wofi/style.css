@@ -1,49 +1,60 @@
-
 window {
-    margin: 10px;
+    border-radius: 30px;
     padding: 20px;
-    border-radius: 10px;
-    opacity: 0.9;
-    background-color: #232323;
+    opacity: 0.8;
+
+    background-color: #1b1b1b;
+}
+
+#outer-box {
+    margin: 15px;
+    border-radius: 20px;
+    padding: 10px;
+    color: #2b2b2b;
+    background-color: #2b2b2b;
 }
 
 #input {
     margin: 5px;
+    padding: 10px;
     color: #f8fbfc;
-    border-color: #043493;
-    background-color: #3a3a3a;
 
-    border-radius: 15px 15px 3px 3px;
+    border-color: #6818ff;
+    background-color: #3a3a3a;
+    border-radius: 10px;
     border-width: 2px;
 }
 
 #inner-box {
     margin: 10px;
-    border-radius: 10px;
-    background-color: #3a3a3a;
 }
 
-#outer-box {
-    margin: 5px;
-    border-radius: 10px;
-    background-color: #424c5a;
-    opacity: 0.9;
-    background-color: #232323;
-}
 
 #scroll {
     margin: 5px;
-    border-radius: 3px 3px 15px 15px;
-    border-color: #043493;
-    border-style: solid;
-    border-width: 2px;
-    border-width: 2px;
+    border-radius: 10px;
+
+    border: 1px solid #6818ff;
     background-color: #3a3a3a;
+
+    padding: 1px;
 }
 
 #text {
+    opacity: 1;
     margin: 2px;
+
     font-family: cousine nerd font mono;
-    color: --wofi-color0;
-    background-color: --wofi-color0;
+
+    color: #f0f3f3;
+}
+
+.entry {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#entry {
+    margin-right: 10px;
+    margin-left: 10px;
 }
