@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# Function to "correct" the input
-correct_input() {
-  case $1 in
-    "gray"|"gr"|"g")
-      echo "gray"
-      ;;
-    "blue_red"|"blue"|"bl"|"b"|"re"|"r")
-      echo "blue_red"
-      ;;
-    *)
-      echo ""
-      ;;
-  esac
-}
 
 # Check if no arguments are provided
 if [ $# -eq 0 ]; then
@@ -21,13 +7,6 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-# Attempt to correct the input
-corrected_input=$(correct_input $1)
-
-if [ -z "$corrected_input" ]; then
-  echo "Unknown input. Please use either 'action1' or 'action2'."
-  exit 1
-fi
 
 # Check the value of the first argument and perform actions based on it
 case $1 in
@@ -35,9 +14,17 @@ case $1 in
     hyprctl hyprpaper wallpaper "DP-1, /home/admin/WallPapers/gray_tower.png"
     hyprctl hyprpaper wallpaper "HDMI-A-1, /home/admin/WallPapers/left_gray_tower.png"
     ;;
+  "grayer")
+    hyprctl hyprpaper wallpaper "DP-1, /home/admin/WallPapers/gray_tower.png"
+    hyprctl hyprpaper wallpaper "HDMI-A-1, /home/admin/WallPapers/left_gray_tower.png"
+    ;;
   "blue_red")
     hyprctl hyprpaper wallpaper "DP-1, /home/admin/WallPapers/redblue.png"
     hyprctl hyprpaper wallpaper "HDMI-A-1, /home/admin/WallPapers/blue_red.png"
+    ;;
+  "red_blue")
+    hyprctl hyprpaper wallpaper "DP-1, /home/admin/WallPapers/silent.png"
+    hyprctl hyprpaper wallpaper "HDMI-A-1, /home/admin/WallPapers/less_but_good_project.png"
     ;;
   *)
     hyprctl hyprpaper wallpaper "DP-1, /home/admin/WallPapers/redblue.png"
