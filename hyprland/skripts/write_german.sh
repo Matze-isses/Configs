@@ -1,34 +1,26 @@
 
 case "$1" in
     a)
-        wl-copy ä
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00E4 
         ;;
     A)
-        wl-copy Ä
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00c4
         ;;
     o)
-        wl-copy ö
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00F6
         ;;
     O)
-        wl-copy Ö
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00d6
         ;;
     u)
-        wl-copy ü
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00Fc
         ;;
     U)
-        wl-copy Ü
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00dc
         ;;
     s)
-        wl-copy ß
-        wtype -s 300 -M ctrl -P v
+        wtype -P 0x00DF
         ;;
-
     *)
         ;;
 esac
