@@ -10,6 +10,9 @@ create_symlink() {
 
 
 case $1 in
+    -hm)
+        create_symlink "$HOME/configs/hyprland/hyprland_master.conf" "$HOME/.config/hypr/hyprland.conf"
+        ;;
     -h)
         read -p "-> Possibilities: (1: [PC] | 2: Laptop): " user_input
         case $user_input in
