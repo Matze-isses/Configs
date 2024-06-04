@@ -6,4 +6,4 @@ timestamp=$(date +%Y%m%d%H%M%S)
 filename="screenshot_$timestamp.png"
 filepath="$folder/$filename"
 
-grim -g "$(slurp)" "$filepath" && sleep 1 && xclip -selection clipboard -t image/png -i "$filepath"
+grim -g "$(slurp -d)" - | tee "$filepath" | wl-copy
