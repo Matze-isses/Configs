@@ -1,7 +1,13 @@
-46 PulseAudio Volume Control
-15 Google Chrome
-8 OBS Studio
-5 Firefox Web Browser
-4 Kdenlive
+90 PulseAudio Volume Control
+85 google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland
+47 OBS Studio
+20 Firefox Web Browser
+7 Kdenlive
+4 Zoom Workplace
+3 Master PDF Editor
+3 Android Studio (Canary Branch)
 2 Skype
 1 KDE System Settings
+1 GNU Image Manipulation Program
+1 Julia
+1 Google Chrome
