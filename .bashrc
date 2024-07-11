@@ -1,19 +1,4 @@
-#
 # ~/.bashrc
-#
-#
-export PYTHONDONTWRITEBYTECODE=1
-# export PATH=/opt/cuda/bin:$PATH
-# export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
-export PATH="/home/admin/bin:$PATH"
-
-export UE4_ROOT=~/UnrealEngine
-export CARLA_ROOT=~/Carla-Simulator/carla13/
-export SCENARIO_RUNNER_ROOT=~/Carla-Simulator/carla13/scenario_runner/
-export PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla/dist/carla-0.9.13.egg
-
-export "GTK_USE_PORTAL=1"
-export "CRYPTOGRAPHY_OPENSSL_NO_LEGACY"=1
 
 
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
@@ -48,13 +33,13 @@ if (command -v perl && command -v cpanm) >/dev/null 2>&1; then
 fi
 
 if [ "$(tty)" = "/dev/tty1" ] ; then
-        #Your environment variables
-        export QT_QPA_PLATFORM=wayland
-        export MOZ_ENABLE_WAYLAND=1
-        export MOZ_WEBRENDER=1
-        export XDG_SESSION_TYPE=wayland
-        export XDG_CURRENT_DESKTOP=hyprland
-        exec hyprland
+    #Your environment variables
+    export QT_QPA_PLATFORM=wayland
+    export MOZ_ENABLE_WAYLAND=1
+    export MOZ_WEBRENDER=1
+    export XDG_SESSION_TYPE=wayland
+    export XDG_CURRENT_DESKTOP=hyprland
+    exec hyprland
 fi
 
 # >>> conda initialize >>>
