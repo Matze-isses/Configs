@@ -2,7 +2,7 @@
 # ~/.bashrc
 #
 export PATH="/home/admin/bin:$PATH"
-export UE4_ROOT=~/UnrealEngine_4.26
+# export UE4_ROOT=~/UnrealEngine_4.26
 export "GTK_USE_PORTAL=1"
 
 

@@ -1,6 +1,5 @@
 # ~/.bashrc
 
-
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
 alias remote='nohup kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty > /dev/null 2>&1 & exit' 
 alias set_bg='~/configs/hyprland/change_bg.sh'
@@ -10,7 +9,7 @@ alias morning_music='~/projects/music_system/play_shell.sh'
 alias music='~/projects/music_system/play_music.sh'
 
 alias sigmoid='python ~/projects/debug/math/math_plots/sigmoid_plot.py'
-alias carla='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+alias start_carla_server='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
 alias act='/home/admin/projects/times/bash_times.sh'
 alias bank='/home/admin/projects/goals/bash_calling.sh'
 alias act_server='/home/admin/projects/act_server/start_client.sh'
@@ -23,9 +22,10 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-
+export CUDA_VISIBLE_DEVICES=1
 . "$HOME/.cargo/env"
-eval "$(zoxide init bash)"
+# export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
+export PYTHONDONTWRITEBYTECODE=1
 
 
 if (command -v perl && command -v cpanm) >/dev/null 2>&1; then
@@ -42,6 +42,10 @@ if [ "$(tty)" = "/dev/tty1" ] ; then
     exec hyprland
 fi
 
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+export _ZO_DATA_DIR=./configs/zoxide/
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -57,4 +61,3 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
