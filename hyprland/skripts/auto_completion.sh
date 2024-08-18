@@ -1,3 +1,0 @@
-
-export GDK_SCALE=1
-export XCURSOR_SIZE=20

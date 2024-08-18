@@ -1,7 +1,7 @@
 
 case "$1" in
     a)
-        wtype -P 0x00E4 -p 0x00E4
+        wtype -P 0x00E4 -s 100 -p 0x00E4
         ;;
     A)
         wtype -P 0x00c4

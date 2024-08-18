@@ -1,5 +1,5 @@
-
 #!/bin/bash
+
 folder="$HOME/Pictures/screenshots"
 mkdir -p "$folder"
 timestamp=$(date +%Y%m%d%H%M%S)
