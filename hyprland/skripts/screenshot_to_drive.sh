@@ -3,15 +3,24 @@
 # Define variables
 REMOTE="remote:/Ziele/Nachweise/Matthis/Aktuell/"
 MOUNT_POINT="/home/admin/drive_goals/"
+LOCAL_DIR_PATH="$HOME/Pictures/screenshots/$weekday"
+LOCAL_SCREENSHOT_PATH="$LOCAL_DIR_PATH/$filename"  # Replace this with your desired path
+
+input=$(zenity --entry --text="Enter your input:" --title="Input Dialog" --width=300 --height=100)
+
+# Check if the user clicked "Cancel"
+if [ $? -eq 1 ]; then
+    echo "User canceled the input."
+    exit 1
+fi
+user_input="$input"
 
 timestamp=$(date +%Y%m%d%H%M%S)
-filename="screenshot_$timestamp.png"
+filename="screenshot_($user_input)_$timestamp.png"
 
 weekday=$(date +%A)
 mkdir -p "$HOME/Pictures/screenshots/$weekday"
 
-LOCAL_DIR_PATH="$HOME/Pictures/screenshots/$weekday"
-LOCAL_SCREENSHOT_PATH="$LOCAL_DIR_PATH/$filename"  # Replace this with your desired path
 
 grim -g "$(slurp)" "$LOCAL_SCREENSHOT_PATH"
 sleep 0.25
