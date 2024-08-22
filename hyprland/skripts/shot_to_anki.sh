@@ -17,7 +17,7 @@ fi
 
 case "$1" in
     d)
-        grim -g "$(slurp)" - | tee "$filepath" | wl-copy
+        grim -g "$(slurp)" - | wl-copy
         sleep 0.5
         hyprctl dispatch movefocus r
         wtype -M ctrl V -s 100 -m ctrl

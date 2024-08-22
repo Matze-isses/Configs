@@ -1,5 +1,6 @@
 # ~/.bashrc
 
+alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
 alias remote='nohup kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty > /dev/null 2>&1 & exit' 
 alias set_bg='~/configs/hyprland/change_bg.sh'
@@ -22,7 +23,7 @@ alias carla='CUDA_VISIBLE_DEVICES=1 DISPLAY= ./Carla-Simulator/carla15/CarlaUE4.
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-PS1='[\u@\h \W]\$ '
+PS1='==\W=> '
 
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 
