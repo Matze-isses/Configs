@@ -1,12 +1,13 @@
-201 OBS Studio
-186 PulseAudio Volume Control
-61 Firefox Web Browser
-46 Kdenlive
-34 Google Chrome
+246 PulseAudio Volume Control
+224 OBS Studio
+77 Firefox Web Browser
+50 Kdenlive
+40 Google Chrome
 24 Anki
-13 Android Studio
-6 Electrum Bitcoin Wallet
-4 Tor Browser
+14 Android Studio
+10 Electrum Bitcoin Wallet
+6 Tor Browser
+4 Firefox
 3 Android Studio (Canary Branch)
 3 Okular
 3 GNU Image Manipulation Program
@@ -15,11 +16,14 @@
 2 KDE System Settings
 2 Zoom Workplace
 2 ISO Image Writer
+2 Thunar File Manager
 1 PDF4QT Viewer Profi
 1 PDF4QT DocPage Organizer
 1 Qt V4L2 video capture utility
 1 YouTube
-1 Thunar File Manager
 1 Neovide
 1 Qt Creator
 1 Citrix Connection Center
+1 FontForge
+1 Volume Control
+1 Dolphin
