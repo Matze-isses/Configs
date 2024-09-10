@@ -3,6 +3,7 @@
 weekday=$(date +%A)
 week_number=$(date +"%V")
 input=$(zenity --entry --text="Enter your input:" --title="Input Dialog" --width=300 --height=100)
+fixed_string="Ziele"
 
 # Check if the user clicked "Cancel"
 if [ $? -eq 1 ]; then
@@ -10,11 +11,17 @@ if [ $? -eq 1 ]; then
     exit 1
 fi
 
-timestamp=$(date +%Y%m%d%H%M%S)
-filename="$input.png"
 
+timestamp=$(date +%Y%m%d%H%M%S)
+
+if [ "$input" = "$fixed_string" ]; then
+    filename="$input-Woche-$week_number.png"
+    REMOTE="remote:/Ziele/"
+else
+    filename="$input.png"
+    REMOTE="remote:/Ziele/Nachweise/Matthis/Aktuell/$weekday-$week_number/"
+fi
 # Define variables
-REMOTE="remote:/Ziele/Nachweise/Matthis/Aktuell/$weekday-$week_number/"
 MOUNT_POINT="/home/admin/drive_goals/"
 LOCAL_DIR_PATH="$HOME/Pictures/proofs/$weekday-$week_number"
 LOCAL_SCREENSHOT_PATH="$LOCAL_DIR_PATH/$filename"  # Replace this with your desired path

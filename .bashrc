@@ -2,7 +2,7 @@
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
-alias remote='nohup kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty > /dev/null 2>&1 & exit' 
+alias remote_one='nohup kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty > /dev/null 2>&1 & exit' 
 alias set_bg='~/configs/hyprland/change_bg.sh'
 alias link_source='~/bash_scripts/link_source.sh'
 
@@ -25,16 +25,8 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='==\W=> '
 
-export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
-
-export PATH=/opt/cuda/bin:$PATH
-export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64
-export TF_FORCE_GPU_ALLOW_GROWTH=true
-
 . "$HOME/.cargo/env"
-export PYTHONDONTWRITEBYTECODE=1
-export FLUX_SCHNELL=~/.cache/huggingface/hub/models--black-forest-labs--FLUX.1-schnell/
+# export FLUX_SCHNELL=~/.cache/huggingface/hub/models--black-forest-labs--FLUX.1-schnell/
 
 
 if (command -v perl && command -v cpanm) >/dev/null 2>&1; then
