@@ -16,7 +16,21 @@ alias bank='/home/admin/projects/goals/bash_calling.sh'
 alias act_server='/home/admin/projects/act_server/start_client.sh'
 alias act_test='/home/admin/projects/act_server/start_client.sh -t'
 alias anki='QTWEBENGINE_CHROMIUM_FLAGS=“–no-sandbox” anki'
-alias carla='CUDA_VISIBLE_DEVICES=1 DISPLAY= ./Carla-Simulator/carla15/CarlaUE4.sh -quality-level=Epic -vulkan'
+alias carla='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+
+export PYDEVD_DISABLE_FILE_VALIDATION=1 
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
+export QT_QPA_PLATFORM=wayland
+export WLR_RENDERER_ALLOW_SOFTWARE=1
+export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
+
+export PATH=/opt/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64
+export TF_FORCE_GPU_ALLOW_GROWTH=true
+export PYTHONDONTWRITEBYTECODE=1
+
+
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
