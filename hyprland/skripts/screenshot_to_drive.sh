@@ -2,8 +2,10 @@
 
 weekday=$(date +%A)
 week_number=$(date +"%V")
+REMOTE="remote:/Ziele/"
+FIXED="Ziele"
+
 input=$(zenity --entry --text="Enter your input:" --title="Input Dialog" --width=300 --height=100)
-fixed_string="Ziele"
 
 # Check if the user clicked "Cancel"
 if [ $? -eq 1 ]; then
@@ -14,37 +16,37 @@ fi
 
 timestamp=$(date +%Y%m%d%H%M%S)
 
-if [ "$input" = "$fixed_string" ]; then
-    filename="$input-Woche-$week_number.png"
-    REMOTE="remote:/Ziele/"
+if [ "$input" = "$FIXED" ]; then
+    filename="Woche-$week_number.png"
+    REMOTE="remote:/Ziele/Mathe_Mann_Matthis/"
 else
     filename="$input.png"
-    REMOTE="remote:/Ziele/Nachweise/Matthis/Aktuell/$weekday-$week_number/"
+    REMOTE="remote:/Ziele/Nachweise/Matthis/Week-$week_number/$weekday/"
 fi
 # Define variables
 MOUNT_POINT="/home/admin/drive_goals/"
-LOCAL_DIR_PATH="$HOME/Pictures/proofs/$weekday-$week_number"
-LOCAL_SCREENSHOT_PATH="$LOCAL_DIR_PATH/$filename"  # Replace this with your desired path
 
+if [-n "$1"]; then
+    LOCAL_FILE="$HOME/Pictures/proofs/$weekday-$week_number/$filename"  # Replace this with your desired path
+    sleep 0.25
+    grim -g "$(slurp)" "$LOCAL_FILE"
+    sleep 0.25
 
-mkdir -p $LOCAL_DIR_PATH
-sleep 0.25
-grim -g "$(slurp)" "$LOCAL_SCREENSHOT_PATH"
-sleep 0.25
+else
+    hyprctl notify 0 5000 'rgb(43c175)' "Started upload of file $1"
+    LOCAL_FILE="$1"
+fi
+
 
 if ! rclone lsd "$REMOTE"; then
+    hyprctl notify 0 5000 'rgb(43c175)' "  Remote dir '$REMOTE' does not exist! Creating new one!"
     echo "Folder '$REMOTE' does not exist. Creating now..."
-    rclone mkdir "$remote_name:$folder_path"
+    rclone mkdir "$REMOTE"
 fi
 
 # Upload the data to Google Drive
-rclone copy "$LOCAL_SCREENSHOT_PATH" "$REMOTE" --progress
-file_count=$(rclone ls "$REMOTE" | wc -l)
+rclone copy "$LOCAL_FILE" "$REMOTE" --progress
 
-if [ -d "$LOCAL_DIR_PATH" ]; then
-  # Count the number of files in the directory
-  hyprctl notify 0 5000 'rgb(43c175)' "  Directory '$LOCAL_DIR_PATH' exists with $file_count files."
-else
-  # Print 0 if the directory does not exist
-  hyprctl notify 0 5000 'rgb(A00505)' "Directory '$LOCAL_DIR_PATH' does not exist"
-fi
+file_count=$(rclone ls "$REMOTE" | wc -l)
+hyprctl notify 0 5000 'rgb(43c175)' "Uploaded $file_count files to that remote directory ($REMOTE)"
+
