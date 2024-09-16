@@ -1,16 +1,16 @@
-263 PulseAudio Volume Control
-246 OBS Studio
+293 PulseAudio Volume Control
+270 OBS Studio
 77 Firefox Web Browser
-56 Kdenlive
-52 Google Chrome
+76 Google Chrome
+67 Kdenlive
 24 Anki
+20 Firefox
 16 Android Studio
 10 Electrum Bitcoin Wallet
-9 Firefox
 7 Tor Browser
+4 GNU Image Manipulation Program
 3 Android Studio (Canary Branch)
 3 Okular
-3 GNU Image Manipulation Program
 3 kitty
 2 NVIDIA X Server Settings
 2 KDE System Settings
@@ -29,3 +29,4 @@
 1 Volume Control
 1 Dolphin
 1 PDF4QT Editor
+1 File Manager Settings
