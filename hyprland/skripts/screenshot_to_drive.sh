@@ -27,14 +27,13 @@ fi
 MOUNT_POINT="/home/admin/drive_goals/"
 
 if [-n "$1"]; then
+    hyprctl notify 0 5000 'rgb(43c175)' "Started upload of file $1"
+    LOCAL_FILE="$1"
+else
     LOCAL_FILE="$HOME/Pictures/proofs/$weekday-$week_number/$filename"  # Replace this with your desired path
     sleep 0.25
     grim -g "$(slurp)" "$LOCAL_FILE"
     sleep 0.25
-
-else
-    hyprctl notify 0 5000 'rgb(43c175)' "Started upload of file $1"
-    LOCAL_FILE="$1"
 fi
 
 
