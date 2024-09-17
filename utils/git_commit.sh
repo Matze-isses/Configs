@@ -6,6 +6,9 @@ case "$1" in
         # Change to the parent directory containing the repositories
         git add .
         git commit -m "$2"
+        if [ "/home/admin" = "$dir" ]; then
+            exit 1
+        fi
 
         # Iterate over all subdirectories
         for dir in */; do
