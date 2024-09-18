@@ -1,5 +1,5 @@
 # ~/.bashrc
-
+export ANDROID_HOME=$HOME/Android/Sdk
 alias drucken='~/configs/hyprland/skripts/drucken.sh'
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
