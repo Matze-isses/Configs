@@ -1,6 +1,10 @@
 # ~/.bashrc
-export ANDROID_HOME=$HOME/Android/Sdk
+source ~/.bash_completion
+if [ -f ~/.bash_completion ]; then
+    . ~/.bash_completion
+fi
 alias drucken='~/configs/hyprland/skripts/drucken.sh'
+alias scrape='conda activate serv && python -m webscraper collect'
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
@@ -9,9 +13,9 @@ alias set_bg='~/configs/hyprland/change_bg.sh'
 alias link_source='~/bash_scripts/link_source.sh'
 
 alias morning_music='~/projects/music_system/play_shell.sh'
-alias music='~/projects/music_system/play_music.sh'
+alias music='conda activate music && python /home/admin/projects/music_system/music_system/second.py'
 
-alias sigmoid='python ~/projects/debug/math/math_plots/sigmoid_plot.py'
+alias sigmoid='python ~/dlr/sonstig/sigmoid.py'
 alias start_carla_server='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
 alias act='/home/admin/projects/times/bash_times.sh'
 alias bank='/home/admin/projects/goals/bash_calling.sh'
@@ -20,16 +24,25 @@ alias act_test='/home/admin/projects/act_server/start_client.sh -t'
 alias anki='QTWEBENGINE_CHROMIUM_FLAGS=“–no-sandbox” anki'
 alias carla='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
 
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=Hyprland
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export QT_QPA_PLATFORM=xcb
+
+export TF_ENABLE_ONEDNN_OPTS=0
+export LD_LIBRARY_PATH=/usr/include
+#export CUDA_FORCE_PTX_JIT=1
+export CUDA_HOME=/opt/cuda/bin
+export TF_FORCE_GPU_ALLOW_GROWTH=true
+
 export PYDEVD_DISABLE_FILE_VALIDATION=1 
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
-export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORM=xcb
 export WLR_RENDERER_ALLOW_SOFTWARE=1
 export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
 
-export PATH=/opt/cuda/bin:$PATH
-export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64
-export TF_FORCE_GPU_ALLOW_GROWTH=true
 export PYTHONDONTWRITEBYTECODE=1
 
 

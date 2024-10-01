@@ -1,28 +1,30 @@
-295 PulseAudio Volume Control
-3 OBS Studio
+338 PulseAudio Volume Control
+31 OBS Studio
 276 Updated upstream
-85 Google Chrome
+134 Google Chrome
+99 File Manager Settings
 0 Stashed changes
 77 Firefox Web Browser
-67 Kdenlive
+70 Kdenlive
+67 Dolphin
+67 PDF4QT Editor
+32 Firefox
 24 Anki
-21 Firefox
-18 Android Studio
+19 Android Studio
 10 Electrum Bitcoin Wallet
 7 Tor Browser
 4 GNU Image Manipulation Program
-4 Dolphin
-4 PDF4QT Editor
-4 File Manager Settings
+4 Volume Control
 3 Android Studio (Canary Branch)
 3 Okular
 3 kitty
+3 FFADO Mixer
 2 NVIDIA X Server Settings
 2 KDE System Settings
 2 Zoom Workplace
 2 ISO Image Writer
 2 Thunar File Manager
-2 FFADO Mixer
+2 QOpenVPN
 1 PDF4QT Viewer Profi
 1 PDF4QT DocPage Organizer
 1 Qt V4L2 video capture utility
@@ -31,9 +33,7 @@
 1 Qt Creator
 1 Citrix Connection Center
 1 FontForge
-1 Volume Control
 1 Control
-trol
-1 Dolphin
-1 PDF4QT Editor
-1 File Manager Settings
+0 Master PDF Editor
+1 Avahi VNC Server Browser
+1 YAD settings

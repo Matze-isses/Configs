@@ -47,15 +47,14 @@ sleep 0.25
 # Notify user about the upload attempt
 hyprctl notify 0 5000 'rgb(43c175)' "Uploading screenshot ($FILENAME) to remote $REMOTE"
 
-# Check if remote directory exists, create if necessary
 if ! rclone lsd "$REMOTE" >/dev/null 2>&1; then
     hyprctl notify 0 5000 'rgb(43c175)' "Remote directory '$REMOTE' does not exist. Creating it now."
     echo "Folder '$REMOTE' does not exist. Creating now..."
-    rclone mkdir "$REMOTE"
+    rclone mkdir "$REMOTE" --progress
 fi
 
 # Upload the screenshot to Google Drive, overwrite if exists
-rclone copy "$LOCAL_FILE" "$REMOTE" --progress --ignore-times --no-update-modtime
+rclone copy "$LOCAL_FILE" "$REMOTE" --progress
 
 # Check if the upload was successful
 if [ $? -eq 0 ]; then
@@ -67,3 +66,24 @@ else
     echo "Error: Failed to upload '$FILENAME' to '$REMOTE'"
     exit 1
 fi
+
+# Call the Python script to update the JSON file
+# Ensure conda is initialized
+eval "$(conda shell.bash hook)"
+
+# Run the Python script within the 'default' conda environment
+conda run -n default python3 "$HOME/configs/update_week_data.py" "$selected_option" "$number"
+
+# Check if the Python script executed successfully
+if [ $? -eq 0 ]; then
+    hyprctl notify 0 2000 'rgb(43c175)' "Updated week data with $selected_option: $number"
+else
+    hyprctl notify 0 5000 'rgb(FF0000)' "Failed to update week data with $selected_option: $number"
+    echo "Error: Failed to update week data."
+    exit 1
+fi
+
+rclone copy "/home/admin/data/goals/Summary.md" "remote:/Ziele/Nachweise/Matthis/Week-$week_number/" --progress --ignore-times --no-update-modtime
+
+hyprctl notify 2 2000 'rgb(61ff05)' "Updated the Summary!"
+
