@@ -83,7 +83,7 @@ else
     exit 1
 fi
 
-rclone copy "/home/admin/data/goals/Summary.md" "remote:/Ziele/Nachweise/Matthis/Week-$week_number/" --progress --ignore-times --no-update-modtime
+# rclone copy "/home/admin/data/goals/Summary.md" "remote:/Ziele/Nachweise/Matthis/Week-$week_number/" --progress --ignore-times --no-update-modtime
 
-hyprctl notify 2 2000 'rgb(61ff05)' "Updated the Summary!"
+# hyprctl notify 2 2000 'rgb(61ff05)' "Updated the Summary!"
 

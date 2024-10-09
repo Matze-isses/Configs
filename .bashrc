@@ -5,6 +5,7 @@ if [ -f ~/.bash_completion ]; then
 fi
 alias drucken='~/configs/hyprland/skripts/drucken.sh'
 alias scrape='conda activate serv && python -m webscraper collect'
+alias ipv6='sudo sysctl net.ipv6.conf.all.disable_ipv6='
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
@@ -16,7 +17,7 @@ alias morning_music='~/projects/music_system/play_shell.sh'
 alias music='conda activate music && python /home/admin/projects/music_system/music_system/second.py'
 
 alias sigmoid='python ~/dlr/sonstig/sigmoid.py'
-alias start_carla_server='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+alias start_carla_server='CUDA_VISIBLE_DEVICES=1 DISPLAY=/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
 alias act='/home/admin/projects/times/bash_times.sh'
 alias bank='/home/admin/projects/goals/bash_calling.sh'
 alias act_server='/home/admin/projects/act_server/start_client.sh'
@@ -29,19 +30,30 @@ export XDG_SESSION_TYPE=wayland
 export XDG_SESSION_DESKTOP=Hyprland
 
 export ANDROID_HOME=$HOME/Android/Sdk
-export QT_QPA_PLATFORM=xcb
 
-export TF_ENABLE_ONEDNN_OPTS=0
+# !!! IF RUNNING ZOOM THIS MUST BE xcb
+# export QT_QPA_PLATFORM=xcb
+
 export LD_LIBRARY_PATH=/usr/include
-#export CUDA_FORCE_PTX_JIT=1
 export CUDA_HOME=/opt/cuda/bin
-export TF_FORCE_GPU_ALLOW_GROWTH=true
+export __GL_SYNC_TO_VBLANK=1
+# export __GL_SYNC_DISPLAY_DEVICE=DFP-0
+# export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=DFP-0
 
-export PYDEVD_DISABLE_FILE_VALIDATION=1 
+# GBM_BACKEND=nvidia-drm
+# __GLX_VENDOR_LIBRARY_NAME=nvidia
+
+#export TF_ENABLE_ONEDNN_OPTS=1
+#export TF_CPP_MIN_LOG_LEVEL=3
+#export CUDA_FORCE_PTX_JIT=1
+#export TF_FORCE_GPU_ALLOW_GROWTH=true
+
+#export PYDEVD_DISABLE_FILE_VALIDATION=1 
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
-export QT_QPA_PLATFORM=xcb
-export WLR_RENDERER_ALLOW_SOFTWARE=1
-export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
+export QT_QPA_PLATFORM=wayland
+
+# export WLR_RENDERER_ALLOW_SOFTWARE=1
+# export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
 
 export PYTHONDONTWRITEBYTECODE=1
 
