@@ -1,8 +1,9 @@
-import sys
 import subprocess
-import os
-import json
 import datetime
+import json
+import sys
+import re
+import os
 
 
 class GoalsHandler:
@@ -147,6 +148,72 @@ class GoalsHandler:
         self.send_notify("  Uploaded Overview")
 
         return string
+
+def main():
+    # Define the path to the current week's directory on Google Drive
+    week_number = str(datetime.datetime.now().isocalendar()[1])
+    week_path = f'remote:/Ziele/Nachweise/Matthis/Week-{week_number}/'
+    print(week_path)
+
+    # List the day subdirectories in the current week's directory
+    days_output = subprocess.check_output(['rclone', 'lsf', '--dirs-only', week_path], encoding='utf-8', timeout=30)
+    days = days_output.strip().split('\n')
+    print(days)
+
+    result_dict = {}
+    without_loss = {}
+
+    for day in days:
+        day = day.strip('/')
+        day_path = week_path + day + "/"
+        print(day_path)
+
+        # List the files in the day's subdirectory
+        files_output = subprocess.check_output(['rclone', 'lsf', day_path], encoding='utf-8', timeout=30)
+        print(files_output)
+        files = files_output.strip().split('\n')
+
+        for file in files:
+            # Match the filename pattern: word_digits.png
+            match = re.match(r'(\w+)_(\d+)\.png', file)
+
+            if match:
+                word = match.group(1)
+                digits = int(match.group(2))
+
+                if word not in without_loss:
+                    without_loss[word] = []
+
+                without_loss[word].append(digits)
+                adjusted_value = digits - 2
+
+                # Add the adjusted value to the dictionary
+                if word in result_dict:
+                    result_dict[word] += adjusted_value
+                else:
+                    result_dict[word] = adjusted_value
+
+    # Print the resulting dictionary
+    return result_dict, without_loss
+
+def extract_day_number(day_name):
+    """
+    Extracts the day number from the subdirectory name.
+    Assumes the subdirectory name is in 'YYYY-MM-DD' format.
+    """
+    try:
+        date_obj = datetime.datetime.strptime(day_name, '%A')
+        # Get the day of the month as the day number
+        return date_obj.day
+    except ValueError:
+        # Return 0 if the date format does not match
+        return 0
+
+if __name__ == "__main__":
+    results, lossless = main()
+    print(results, lossless)
+
+    raise ValueError()
 
 if __name__ == "__main__":
     handler = GoalsHandler()
