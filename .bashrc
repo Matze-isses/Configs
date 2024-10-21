@@ -5,11 +5,11 @@ if [ -f ~/.bash_completion ]; then
 fi
 
 alias drucken='~/configs/hyprland/skripts/drucken.sh'
-alias scrape='conda activate serv && python -m webscraper collect'
+alias scrape='conda activate serv && python -m webscraper'
 alias ipv6='sudo sysctl net.ipv6.conf.all.disable_ipv6='
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
-alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
+alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install '
 alias remote_one='nohup kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty > /dev/null 2>&1 & exit' 
 alias set_bg='~/configs/hyprland/change_bg.sh'
 alias link_source='~/bash_scripts/link_source.sh'
@@ -24,7 +24,8 @@ alias bank='/home/admin/projects/goals/bash_calling.sh'
 alias act_server='/home/admin/projects/act_server/start_client.sh'
 alias act_test='/home/admin/projects/act_server/start_client.sh -t'
 alias anki='QTWEBENGINE_CHROMIUM_FLAGS=“–no-sandbox” anki'
-alias carla='/home/admin/Carla-Simulator/v13_carla/CarlaUE4.sh'
+alias carla='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+alias carlatsc='/home/admin/Carla-Simulator/v13_carla/CarlaUE4.sh'
 # export VGL_ALLOWINDIRECT=1
 # export VGL_FORCEALPHA=1
 # export VGL_GLFLUSHTRIGGER=0

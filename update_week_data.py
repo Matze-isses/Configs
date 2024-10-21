@@ -24,11 +24,15 @@ class GoalsHandler:
         else:
             self.data = {self.week_number: {}}
 
+        if self.week_number not in self.data:
+            self.data[self.week_number] = {}
         for i in range(datetime.datetime.now().weekday()):
             past_day = datetime.datetime.now() - datetime.timedelta(days=i+1)
 
             if past_day.strftime("%A") not in self.data[self.week_number]:
                 past_day = past_day.strftime("%A")
+                if "Requirements" not in self.data[self.week_number]:
+                    self.data[self.week_number]["Requirements"] = {"Laufen": 5, "Schreiben": 2}
                 required = self.data[self.week_number]["Requirements"]
                 self.data[self.week_number][past_day] = {
                     "Laufen": [0],
@@ -43,20 +47,58 @@ class GoalsHandler:
     def transform_saved(self, item):
         return item if type(item) is int else (int(item) if type(item) is str else sum(item))
 
-    def _get_past_results(self):
-        perf_past = {key: - 6 * self.transform_saved(value) for key, value in self.data[str(int(self.week_number)-1)]["Requirements"].items()}
-        for key, value in self.data[str(int(self.week_number)-1)].items():
-            if key == "Requirements": continue
-            for goal, num in value.items():
-                perf_past[goal] += self.transform_saved(num)
-        return perf_past
+    def get_results(self, week_number: str):
+        # Define the path to the current week's directory on Google Drive
+        week_path = f'remote:/Ziele/Nachweise/Matthis/Week-{week_number}/'
+        print(week_path)
+
+        # List the day subdirectories in the current week's directory
+        days_output = subprocess.check_output(['rclone', 'lsf', '--dirs-only', week_path], encoding='utf-8', timeout=30)
+        days = days_output.strip().split('\n')
+        print(days)
+
+        result_dict = {}
+        without_loss = {}
+
+        for day in days:
+            day = day.strip('/')
+            day_path = week_path + day + "/"
+            print(day_path)
+
+            # List the files in the day's subdirectory
+            files_output = subprocess.check_output(['rclone', 'lsf', day_path], encoding='utf-8', timeout=30)
+            print(files_output)
+            files = files_output.strip().split('\n')
+
+            for file in files:
+                # Match the filename pattern: word_digits.png
+                match = re.match(r'(\w+)_(\d+)\.png', file)
+
+                if match:
+                    word = match.group(1)
+                    digits = int(match.group(2))
+
+                    if word not in without_loss:
+                        without_loss[word] = []
+
+                    without_loss[word].append(digits)
+                    adjusted_value = digits - 2
+
+                    # Add the adjusted value to the dictionary
+                    if word in result_dict:
+                        result_dict[word] += adjusted_value
+                    else:
+                        result_dict[word] = adjusted_value
+
+        # Print the resulting dictionary
+        return result_dict, without_loss
 
     def add_data(self, selected_option, number):
         weekday = str(datetime.datetime.now().strftime("%A"))
 
         if self.week_number not in self.data:
             if int(self.week_number)-1 in self.data:
-                perf_past = self._get_past_results()
+                perf_past = self.get_results(str(int(self.week_number)-1))[0]
             else:
                 self.current_data = {
                     "Requirements": {"Laufen": 5, "Schreiben": 4}
@@ -106,7 +148,7 @@ class GoalsHandler:
             json.dump(self.data, f, indent=4)
 
     def generate_overview(self):
-        past_perf = self._get_past_results()
+        past_perf = self.get_results(str(int(self.week_number)-1))[0]
 
         string = "\n\n" + " " * 30 + "Goals" + 30 * " " + "\n"
         string +=         " " * 26 + "---=======---" + 26 * " " + "\n\n"
@@ -209,11 +251,8 @@ def extract_day_number(day_name):
         # Return 0 if the date format does not match
         return 0
 
-if __name__ == "__main__":
+def testfkt():
     results, lossless = main()
-    print(results, lossless)
-
-    raise ValueError()
 
 if __name__ == "__main__":
     handler = GoalsHandler()
