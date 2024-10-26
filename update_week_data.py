@@ -40,9 +40,11 @@ class GoalsHandler:
                 }
 
         self.current_data = self.data[self.week_number]
+        self.send_notify(f" The current results are\n Laufen:    {self.get_results(self.week_number)[0]['Laufen']}\n Schreiben: {self.get_results(self.week_number)[0]['Schreiben']}")
 
     def send_notify(self, notification, notification_type=1, color='25dfdf'):
         subprocess.run(["hyprctl", "notify", str(notification_type), '5000', 'rgb(' + color + ')', notification])
+        print(notification)
 
     def transform_saved(self, item):
         return item if type(item) is int else (int(item) if type(item) is str else sum(item))
@@ -161,24 +163,28 @@ class GoalsHandler:
         string += "\n\n" + " " * 30 + "Results" + 30 * " " + "\n"
         string +=          " " * 29 + "=========" + 29 * " " + "\n\n"
 
-        current_perf = {}
         for day, progress_day in self.current_data.items():
-            if day == "Requirements": continue
+            if day == "Requirements": 
+                continue
 
             string += f"    {day+':':10s}\n"
-            string += " " * (21) + "+-------+--------+--------++-------+\n"
+            string += " " * (21) + "+------+-----------+----------++-------+\n"
+            string += " " * (21) + "| Done | Past Done | Required || Total |\n"
+            string += " " * (21) + "+------+-----------+----------++-------+\n"
 
+            # handles the items per day 
             for key, value_list in progress_day.items():
                 today_done = sum(value_list) # type: ignore
                 total = int(past_perf[key]) + today_done - int(requirements[key])
+
+                string += f"        {key + ':':<12s} | {int(today_done):^ 4d} | {int(past_perf[key]):^9d} | {int(requirements[key]):^ 8d} || {int(total):> 5d} |\n"
+
                 print("TODAY", today_done)
                 print("BEFORE", past_perf[key])
 
-                string += f"        {key + ':':<12s} | {int(today_done):^ 5d} | {int(past_perf[key]):^6d} | {int(requirements[key]):^ 6d} || {int(total):> 5d} |\n"
-
                 past_perf[key] = total
 
-            string += " " * (21) + "+-------+--------+--------++-------+\n"
+            print(string)
 
             string += "\n\n"
 

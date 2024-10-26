@@ -36,17 +36,17 @@ alias carlatsc='/home/admin/Carla-Simulator/v13_carla/CarlaUE4.sh'
 # export XDG_SESSION_DESKTOP=Hyprland
 
 export ANDROID_HOME=$HOME/Android/Sdk
+export CUDA_HOME=/opt/cuda/bin
 
 # !!! IF RUNNING ZOOM THIS MUST BE xcb
 # export QT_QPA_PLATFORM=xcb
 
-export CUDA_HOME=/opt/cuda/bin
 # export __GL_SYNC_TO_VBLANK=1
 # export __GL_SYNC_DISPLAY_DEVICE=DFP-0
 # export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=DFP-0
 
-# GBM_BACKEND=nvidia-drm
-# __GLX_VENDOR_LIBRARY_NAME=nvidia
+export GBM_BACKEND=nvidia-drm
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export __NV_PRIME_RENDER_OFFLOAD=1
 
 #export TF_ENABLE_ONEDNN_OPTS=1
@@ -65,6 +65,11 @@ export PYDEVD_DISABLE_FILE_VALIDATION=1
 export PYTHONDONTWRITEBYTECODE=1
 
 
+## The beautiful carla api
+# export CARLA_ROOT=/home/admin/Carla-Simulator/v13_carla
+# export SCENARIO_RUNNER_ROOT=/home/admin/Carla-Simulator/v13_carla/scenario_runner
+# export PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla
+# export PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla/dist/carla-0.9.13-py3.7-linux-x86_64.egg
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
