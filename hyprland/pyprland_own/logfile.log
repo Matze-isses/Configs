@@ -1,0 +1,5 @@
+2024-10-06 15:41:23,438 [INFO] ipc :: Logger "ipc" initialized :: common.py:205
+2024-10-06 15:41:23,438 [INFO] startup :: Logger "startup" initialized :: common.py:205
+2024-10-06 15:41:23,438 [INFO] pypr :: Logger "pypr" initialized :: common.py:205
+2024-10-06 15:41:23,438 [CRITICAL] pypr :: Config file not found! Please create /home/admin/.config/hypr/pyprland.toml :: command.py:101
+2024-10-06 15:41:23,438 [CRITICAL] startup :: Command failed. :: command.py:488

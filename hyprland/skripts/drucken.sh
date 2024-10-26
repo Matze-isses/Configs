@@ -14,8 +14,7 @@ if [ ! -f "$input_pdf" ]; then
     exit 1
 fi
 
-# Use zenity to get the remote filename
-remote_name=$(zenity --entry --text="Remote Name:" --title="Drucker Senden" --width=300 --height=100)
+remote_name=$(rofi -dmenu -p "Please enter a number:")
 
 # Check if a remote name was provided
 if [ -z "$remote_name" ]; then

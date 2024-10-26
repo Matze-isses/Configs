@@ -1,0 +1,15 @@
+[pyprland]
+plugins = [
+    "workspaces_follow_focus",
+    "fetch_client_menu",
+    "expose",
+    "layout_center",
+    "/home/admin/configs/hyprland/pyprland_own/pypr_examples"
+]
+
+[layout_center]
+margin = [10, 10]
+offset = [0, 0]
+next = "movefocus r"
+prev = "movefocus l"
+captive_focus = true

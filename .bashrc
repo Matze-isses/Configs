@@ -1,39 +1,75 @@
 # ~/.bashrc
+source ~/.bash_completion
+if [ -f ~/.bash_completion ]; then
+    . ~/.bash_completion
+fi
 
 alias drucken='~/configs/hyprland/skripts/drucken.sh'
-alias ogit='~/configs/utils/git_commit.sh'
+alias scrape='conda activate serv && python -m webscraper'
+alias ipv6='sudo sysctl net.ipv6.conf.all.disable_ipv6='
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
-alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install'
+alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install '
 alias remote_one='nohup kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty > /dev/null 2>&1 & exit' 
 alias set_bg='~/configs/hyprland/change_bg.sh'
 alias link_source='~/bash_scripts/link_source.sh'
 
 alias morning_music='~/projects/music_system/play_shell.sh'
-alias music='~/projects/music_system/play_music.sh'
+alias music='conda activate music && python /home/admin/projects/music_system/music_system/second.py'
 
-alias sigmoid='python ~/projects/debug/math/math_plots/sigmoid_plot.py'
-alias start_carla_server='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+alias sigmoid='python ~/dlr/sonstig/sigmoid.py'
+alias start_carla_server='CUDA_VISIBLE_DEVICES=1 DISPLAY=/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
 alias act='/home/admin/projects/times/bash_times.sh'
 alias bank='/home/admin/projects/goals/bash_calling.sh'
 alias act_server='/home/admin/projects/act_server/start_client.sh'
 alias act_test='/home/admin/projects/act_server/start_client.sh -t'
 alias anki='QTWEBENGINE_CHROMIUM_FLAGS=“–no-sandbox” anki'
 alias carla='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+alias carlatsc='/home/admin/Carla-Simulator/v13_carla/CarlaUE4.sh'
+# export VGL_ALLOWINDIRECT=1
+# export VGL_FORCEALPHA=1
+# export VGL_GLFLUSHTRIGGER=0
+# export VGL_READBACK=pbo
+# export VGL_SPOILLAST=0
+# export XDG_CURRENT_DESKTOP=Hyprland
+# export XDG_SESSION_TYPE=wayland
+# export XDG_SESSION_DESKTOP=Hyprland
 
-export PYDEVD_DISABLE_FILE_VALIDATION=1 
+export ANDROID_HOME=$HOME/Android/Sdk
+export CUDA_HOME=/opt/cuda/bin
+
+# !!! IF RUNNING ZOOM THIS MUST BE xcb
+# export QT_QPA_PLATFORM=xcb
+
+# export __GL_SYNC_TO_VBLANK=1
+# export __GL_SYNC_DISPLAY_DEVICE=DFP-0
+# export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=DFP-0
+
+export GBM_BACKEND=nvidia-drm
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export __NV_PRIME_RENDER_OFFLOAD=1
+
+#export TF_ENABLE_ONEDNN_OPTS=1
+#export TF_CPP_MIN_LOG_LEVEL=3
+#export CUDA_FORCE_PTX_JIT=1
+#export TF_FORCE_GPU_ALLOW_GROWTH=true
+
+# export DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP=1
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 export QT_QPA_PLATFORM=wayland
-export WLR_RENDERER_ALLOW_SOFTWARE=1
-export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
 
-export PATH=/opt/cuda/bin:$PATH
-export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/extras/CUPTI/lib64
-export TF_FORCE_GPU_ALLOW_GROWTH=true
+# export WLR_RENDERER_ALLOW_SOFTWARE=1
+# export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
+
+export PYDEVD_DISABLE_FILE_VALIDATION=1 
 export PYTHONDONTWRITEBYTECODE=1
 
 
+## The beautiful carla api
+# export CARLA_ROOT=/home/admin/Carla-Simulator/v13_carla
+# export SCENARIO_RUNNER_ROOT=/home/admin/Carla-Simulator/v13_carla/scenario_runner
+# export PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla
+# export PYTHONPATH=$PYTHONPATH:${CARLA_ROOT}/PythonAPI/carla/dist/carla-0.9.13-py3.7-linux-x86_64.egg
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
