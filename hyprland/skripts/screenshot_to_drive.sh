@@ -72,7 +72,9 @@ fi
 eval "$(conda shell.bash hook)"
 
 # Run the Python script within the 'default' conda environment
-conda run -n default python3 "$HOME/configs/update_week_data.py" "$selected_option" "$number"
+source /opt/miniconda3/etc/profile.d/conda.sh
+conda activate default
+python "$HOME/configs/update_week_data.py" "$selected_option" "$number"
 
 # Check if the Python script executed successfully
 if [ $? -eq 0 ]; then
