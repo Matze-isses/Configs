@@ -38,7 +38,8 @@ class GoalsHandler:
                 required = self.data[self.week_number]["Requirements"]
                 self.data[self.week_number][past_day] = {"Laufen": 0, "Schreiben": 0 }
 
-        self.current_data = self.data[self.week_number]
+        self._current_data = self.data[self.week_number]
+        self._progress = {self.week_number: self.get_results(self.week_number), str(int(self.week_number)-1): self.get_results(str(int(self.week_number)-1))}
 
     def send_notify(self, notification, notification_type=1, color='25dfdf'):
         subprocess.run(["hyprctl", "notify", str(notification_type), '5000', 'rgb(' + color + ')', notification])
@@ -135,14 +136,14 @@ class GoalsHandler:
                 print(self.data[week_number][day][word])
 
         # Print the resulting dictionary
-        return result_dict, without_loss
+        return result_dict
 
     def add_data(self, selected_option, number):
         weekday = str(datetime.datetime.now().strftime("%A"))
 
         if self.week_number not in self.data:
             if int(self.week_number)-1 in self.data:
-                perf_past = self.get_results(str(int(self.week_number)-1))[0]
+                perf_past = self.get_results(str(int(self.week_number)-1))
             else:
                 self.current_data = {
                     "Requirements": {"Laufen": 5, "Schreiben": 4}
@@ -198,11 +199,7 @@ class GoalsHandler:
         string +=         " " * 26 + "---=======---" + 26 * " " + "\n\n"
         string += "Current Goals are given by:\n"
 
-        current_data = self.data[self.week_number]
-        requirements = current_data["Requirements"]
-        for req, num in current_data["Requirements"].items():
-            string += " " * 4 + f"{req:<10s}: {int(num):>2d}\n"
-
+        current_data = self.progress[self.week_number]
         string += "\n\n" + " " * 30 + "Results" + 30 * " " + "\n"
         string +=          " " * 29 + "=========" + 29 * " " + "\n\n"
 
