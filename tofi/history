@@ -1,9 +1,9 @@
-321 PulseAudio Volume Control
-293 OBS Studio
-82 Google Chrome
+326 PulseAudio Volume Control
+299 OBS Studio
+83 Google Chrome
 77 Firefox Web Browser
 73 Kdenlive
-26 Firefox
+28 Firefox
 24 Anki
 16 Android Studio
 10 Electrum Bitcoin Wallet
@@ -12,12 +12,13 @@
 3 Android Studio (Canary Branch)
 3 Okular
 3 kitty
+3 Thunar File Manager
 2 NVIDIA X Server Settings
 2 KDE System Settings
 2 Zoom Workplace
 2 ISO Image Writer
-2 Thunar File Manager
 2 FFADO Mixer
+2 NoiseTorch
 1 PDF4QT Viewer Profi
 1 PDF4QT DocPage Organizer
 1 Qt V4L2 video capture utility

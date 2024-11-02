@@ -1,45 +1,27 @@
+import collections
+import traceback
 import subprocess
+from itertools import product
 import datetime
 import json
 import sys
 import re
 import os
 
+days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+req = {"Laufen": 5, "Schreiben": 2}
+
 
 class GoalsHandler:
     def __init__(self, base_dir: str = "/home/admin/data/goals/"):
         self.path_data = base_dir + "goal_data.json"
         self.path_summery = base_dir + "Summary.md"
-        self.week_number = str(datetime.datetime.now().isocalendar()[1])
+        self.week_number = int(datetime.datetime.now().isocalendar()[1])
         self.path_summery_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number}/Summary.md"
         self.path_current_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number}/{datetime.datetime.now().strftime('%A')}/"
-
-        if os.path.exists(self.path_data):
-            with open(self.path_data, 'r') as f:
-                try:
-                    self.data = json.load(f)
-                except json.JSONDecodeError:
-                    self.send_notify("Cannot open json file", color='c14371')
-                    sys.exit(1)
-        else:
-            self.data = {self.week_number: {}}
-
-        if self.week_number not in self.data:
-            self.data[self.week_number] = {}
-
-        for i in range(datetime.datetime.now().weekday()):
-            past_day = datetime.datetime.now() - datetime.timedelta(days=i+1)
-
-            if past_day.strftime("%A") not in self.data[self.week_number]:
-                past_day = past_day.strftime("%A")
-                if "Requirements" not in self.data[self.week_number]:
-                    self.data[self.week_number]["Requirements"] = {"Laufen": 5, "Schreiben": 2}
-
-                required = self.data[self.week_number]["Requirements"]
-                self.data[self.week_number][past_day] = {"Laufen": 0, "Schreiben": 0 }
-
-        self._current_data = self.data[self.week_number]
-        self._progress = {self.week_number: self.get_results(self.week_number), str(int(self.week_number)-1): self.get_results(str(int(self.week_number)-1))}
+        self.data = {}
+        self.data[self.week_number] = self.get_results(self.week_number)
+        self.data[self.week_number-1] = self.get_results(self.week_number-1)
 
     def send_notify(self, notification, notification_type=1, color='25dfdf'):
         subprocess.run(["hyprctl", "notify", str(notification_type), '5000', 'rgb(' + color + ')', notification])
@@ -48,29 +30,40 @@ class GoalsHandler:
     def transform_saved(self, item):
         return item if type(item) is int else (int(item) if type(item) is str else sum(item))
 
-    def get_results(self, week_number: str):
+    @staticmethod
+    def search_for_requirements_in_files(files):
+        results = {key: 0 for key in req.keys()}
+        for file in files:
+            # Match the filename pattern: word_digits.png
+            try:
+                match = re.match(r'(\w+)_(\d+)\.png', file)
+                if match is None:
+                    continue
+
+                key = match.group(1)
+                value = int(match.group(2))
+                if key in req:
+                    results[key] += value
+            except Exception as e:
+                print(f"Error with search in files {e}")
+            
+
+        return results
+
+    def get_results(self, week_number: int):
         # Define the path to the current week's directory on Google Drive
         week_path = f'remote:/Ziele/Nachweise/Matthis/Week-{week_number}/'
 
         if week_number not in self.data:
-            self.data[week_number] = {}
-        print(week_path)
-
+            self.data[week_number] = self.data
         # List the day subdirectories in the current week's directory
         days_output = subprocess.check_output(['rclone', 'lsf', '--dirs-only', week_path], encoding='utf-8', timeout=30)
         days = days_output.strip().split('\n')
         print(days)
 
-        result_dict = {"Schreiben": 0, "Laufen": 0}
-        required = self.data[week_number]["Requirements"] if "Requirements" in self.data[week_number] else {"Laufen": 5, "Schreiben": 2}
-        without_loss = {}
-
-        day_to_int = {day: i for i, day in enumerate(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']) if i <= datetime.datetime.now().weekday() or self.week_number != week_number}
+        result_dict = {}
 
         for day in days:
-            if day not in self.data[week_number]:
-                self.data[week_number][day[:-1]] = {}
-
             print(day)
             day = day.strip('/')
             day_path = week_path + day + "/"
@@ -80,62 +73,9 @@ class GoalsHandler:
             files_output = subprocess.check_output(['rclone', 'lsf', day_path], encoding='utf-8', timeout=30)
             files = files_output.strip().split('\n')
             print(files)
-            
-            for file in files:
-                # Match the filename pattern: word_digits.png
-                match = re.match(r'(\w+)_(\d+)\.png', file)
+            result_day = self.search_for_requirements_in_files(files)
+            result_dict[day] = result_day
 
-                if match:
-                    word = match.group(1)
-                    digits = int(match.group(2))
-
-                    if word not in without_loss:
-                        without_loss[word] = []
-
-                    without_loss[word].append(digits)
-
-                    if day in day_to_int:
-                        adjusted_value = digits - required[word]
-                    else:
-                        adjusted_value = digits
-
-                    try:
-                        day_to_int.pop(day)
-                    except Exception:
-                        pass
-
-                    print(adjusted_value, "     " + word + "     ", result_dict)
-                    
-                    # Add the adjusted value to the dictionary
-                    if word not in result_dict:
-                        result_dict[word] = adjusted_value
-                    else:
-                        result_dict[word] += adjusted_value
-
-                    if word not in self.data[week_number][day]:
-                        self.data[week_number][day][word] = adjusted_value
-                    else:
-                        self.data[week_number][day][word] += adjusted_value
-
-        for day in day_to_int.keys():
-            for word in required:
-                print(day)
-                print(word)
-                if day not in self.data[week_number] or word not in self.data[week_number][day] or self.data[week_number][day][word] == [0]:
-                    result_dict[word] -= required[word]
-
-                if day not in self.data[week_number]:
-                    self.data[week_number][day] = {key: - value for key, value in required.items()}
-
-                if word not in self.data[week_number][day] or self.data[week_number][day][word] == [0]:
-                    self.data[week_number][day][word] = [0]
-
-
-                print(result_dict[word])
-                print(required)
-                print(self.data[week_number][day][word])
-
-        # Print the resulting dictionary
         return result_dict
 
     def add_data(self, selected_option, number):
@@ -143,7 +83,7 @@ class GoalsHandler:
 
         if self.week_number not in self.data:
             if int(self.week_number)-1 in self.data:
-                perf_past = self.get_results(str(int(self.week_number)-1))
+                perf_past = self.get_results(int(self.week_number)-1)
             else:
                 self.current_data = {
                     "Requirements": {"Laufen": 5, "Schreiben": 4}
@@ -160,10 +100,6 @@ class GoalsHandler:
             self.current_data[weekday] = {}
 
         # Update the self.data
-        if selected_option in self.current_data[weekday]:
-            self.current_data[weekday][selected_option].append(number)
-        else:
-            self.current_data[weekday][selected_option] = [number]
 
         self.generate_overview()
         self.save()
@@ -192,37 +128,62 @@ class GoalsHandler:
         with open(self.path_data, 'w') as f:
             json.dump(self.data, f, indent=4)
 
-    def generate_overview(self):
-        past_perf = self.get_results(str(int(self.week_number)-1))[0]
+    @staticmethod
+    def get_results_of_week(week_data: dict, subtract_required: bool = True):
+        result = {key: 0 for key in req.keys()}
+        needed = [(key, value) for key, value in req.items()]
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
+        for day, (opt, requirement) in product(days, needed):
+            if day not in week_data or opt not in week_data[day]:
+                result[opt] -= requirement
+            else:
+                result[opt] += week_data[day][opt] - requirement
+
+            if not subtract_required:
+                result[opt] += requirement
+
+        return result
+
+    def generate_overview(self):
         string = "\n\n" + " " * 30 + "Goals" + 30 * " " + "\n"
         string +=         " " * 26 + "---=======---" + 26 * " " + "\n\n"
         string += "Current Goals are given by:\n"
-
-        current_data = self.progress[self.week_number]
         string += "\n\n" + " " * 30 + "Results" + 30 * " " + "\n"
         string +=          " " * 29 + "=========" + 29 * " " + "\n\n"
 
-        for day, progress_day in current_data.items():
-            if day == "Requirements": 
-                continue
+        current_data = self.data[self.week_number]
+        print(f"Current Week: {current_data}")
+        past_perf = self.get_results_of_week(self.data[self.week_number-1], True)
+        print(f"Past Performance: {past_perf}")
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
+        for day in days:
             string += f"    {day+':':10s}\n"
             string += " " * (21) + "+------+-----------+----------++-------+\n"
             string += " " * (21) + "| Done | Past Done | Required || Total |\n"
             string += " " * (21) + "+------+-----------+----------++-------+\n"
 
-            # handles the items per day 
-            for key, value_list in progress_day.items():
-                today_done = sum(value_list) if type(value_list) is list else value_list
-                total = int(past_perf[key]) + today_done - int(requirements[key])
-
-                string += f"        {key + ':':<12s} | {int(today_done):^ 4d} | {int(past_perf[key]):^9d} | {int(requirements[key]):^ 8d} || {int(total):> 5d} |\n"
+            # handles the items per day
+            for key, value in req.items():
+                if day not in current_data:
+                    print(key, day, current_data)
+                    perf = 0
+                elif key not in current_data[day]:
+                    print(key)
+                    perf = 0
+                else:
+                    print("in data")
+                    perf = current_data[day][key]
+                print(perf)
+                
+                today_done = sum(perf) if type(perf) is list else perf 
+                done_before = past_perf[key]
+                past_perf[key] += today_done - value
+                string += f"        {key + ':':<12s} | {int(today_done):^ 4d} | {int(done_before):^9d} | {int(value):^ 8d} || {int(past_perf[key]):> 5d} |\n"
 
                 print("TODAY", today_done)
                 print("BEFORE", past_perf[key])
-
-                past_perf[key] = total
 
             print(string)
 
@@ -237,87 +198,16 @@ class GoalsHandler:
 
         return string
 
-def main():
-    # Define the path to the current week's directory on Google Drive
-    week_number = str(datetime.datetime.now().isocalendar()[1])
-    week_path = f'remote:/Ziele/Nachweise/Matthis/Week-{week_number}/'
-    print(week_path)
-
-    # List the day subdirectories in the current week's directory
-    days_output = subprocess.check_output(['rclone', 'lsf', '--dirs-only', week_path], encoding='utf-8', timeout=30)
-    days = days_output.strip().split('\n')
-    print(days)
-
-    result_dict = {}
-    without_loss = {}
-
-    for day in days:
-        day = day.strip('/')
-        day_path = week_path + day + "/"
-        print(day_path)
-
-        # List the files in the day's subdirectory
-        files_output = subprocess.check_output(['rclone', 'lsf', day_path], encoding='utf-8', timeout=30)
-        print(files_output)
-        files = files_output.strip().split('\n')
-
-        for file in files:
-            # Match the filename pattern: word_digits.png
-            match = re.match(r'(\w+)_(\d+)\.png', file)
-
-            if match:
-                word = match.group(1)
-                digits = int(match.group(2))
-
-                if word not in without_loss:
-                    without_loss[word] = []
-
-                without_loss[word].append(digits)
-                adjusted_value = digits - 2
-
-                # Add the adjusted value to the dictionary
-                if word in result_dict:
-                    result_dict[word] += adjusted_value
-                else:
-                    result_dict[word] = adjusted_value
-
-    # Print the resulting dictionary
-    return result_dict, without_loss
-
-def extract_day_number(day_name):
-    """
-    Extracts the day number from the subdirectory name.
-    Assumes the subdirectory name is in 'YYYY-MM-DD' format.
-    """
-    try:
-        date_obj = datetime.datetime.strptime(day_name, '%A')
-        # Get the day of the month as the day number
-        return date_obj.day
-    except ValueError:
-        # Return 0 if the date format does not match
-        return 0
-
-def testfkt():
-    results, lossless = main()
 
 if __name__ == "__main__":
     handler = GoalsHandler()
+    try:
+        selected_option = sys.argv[1]
+        number = int(sys.argv[2])
+        handler.add_data(selected_option, number)
 
-    if sys.argv[1] == "test":
         handler.generate_overview()
-        sys.exit(1)
-
-    if sys.argv[1] == "set_required":
-        handler.add_required_for_week()
-        sys.exit(1)
-
-    selected_option = sys.argv[1]
-    number = int(sys.argv[2])
-    handler.add_data(selected_option, number)
+    except Exception:
+        traceback.print_exc()
 
     handler.generate_overview()
-    results_old = handler.get_results(str(int(handler.week_number)-1))[0]
-    results, without_loss = handler.get_results(handler.week_number)
-    results["Schreiben"] += results_old["Schreiben"]
-    results["Laufen"] += results_old["Laufen"]
-    handler.send_notify(f" The current results are\n Laufen:    {results['Laufen']}\n Schreiben: {results['Schreiben']}")
