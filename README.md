@@ -1,3 +1,0 @@
-# Configs
-252908417685-q79khn4strk8qe1sn33tnei9b8pumr67.apps.googleusercontent.com
-464197807744-acjqo6iiscuc3c8cg21rufps7dr1gvah.apps.googleusercontent.com

@@ -38,8 +38,6 @@ alias carlatsc='/home/admin/Carla-Simulator/v13_carla/CarlaUE4.sh'
 export ANDROID_HOME=$HOME/Android/Sdk
 export CUDA_HOME=/opt/cuda/bin
 
-# !!! IF RUNNING ZOOM THIS MUST BE xcb
-# export QT_QPA_PLATFORM=xcb
 
 # export __GL_SYNC_TO_VBLANK=1
 # export __GL_SYNC_DISPLAY_DEVICE=DFP-0
@@ -47,7 +45,6 @@ export CUDA_HOME=/opt/cuda/bin
 
 export GBM_BACKEND=nvidia-drm
 export GDK_SCALE=2
-export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export __NV_PRIME_RENDER_OFFLOAD=1
 
 #export TF_ENABLE_ONEDNN_OPTS=1
@@ -55,7 +52,11 @@ export __NV_PRIME_RENDER_OFFLOAD=1
 #export CUDA_FORCE_PTX_JIT=1
 #export TF_FORCE_GPU_ALLOW_GROWTH=true
 
+# !!! IF RUNNING ZOOM THIS MUST BE xcb
+# export QT_QPA_PLATFORM=xcb
+#
 # export DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP=1
+#
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 export QT_QPA_PLATFORM=wayland
 
