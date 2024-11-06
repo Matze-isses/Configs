@@ -22,6 +22,8 @@ class GoalsHandler:
         self.data = {}
         self.data[self.week_number] = self.get_results(self.week_number)
         self.data[self.week_number-1] = self.get_results(self.week_number-1)
+        self.data[self.week_number-2] = self.get_results(self.week_number-2)
+        self.save()
 
     def send_notify(self, notification, notification_type=1, color='25dfdf'):
         subprocess.run(["hyprctl", "notify", str(notification_type), '5000', 'rgb(' + color + ')', notification])
@@ -106,7 +108,7 @@ class GoalsHandler:
         self.check_num_files()
 
     def add_required_for_week(self):
-        self.current_data["Requirements"][sys.argv[2]] = sys.argv[3]
+        self.data[self.week_number]["Requirements"][sys.argv[2]] = sys.argv[3]
         self.save()
 
     def send_to_drive(self, path_local, path_remote):
@@ -124,7 +126,6 @@ class GoalsHandler:
 
     def save(self):
         # Save the JSON self.data
-        self.data[self.week_number] = self.current_data
         with open(self.path_data, 'w') as f:
             json.dump(self.data, f, indent=4)
 
