@@ -58,7 +58,7 @@ export __NV_PRIME_RENDER_OFFLOAD=1
 # export DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP=1
 #
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
-export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORM=xcb
 
 # export WLR_RENDERER_ALLOW_SOFTWARE=1
 # export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'

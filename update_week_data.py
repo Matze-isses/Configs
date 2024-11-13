@@ -3,6 +3,7 @@ import traceback
 import subprocess
 from itertools import product
 import datetime
+from typing import Union
 import json
 import sys
 import re
@@ -20,9 +21,8 @@ class GoalsHandler:
         self.path_summery_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number}/Summary.md"
         self.path_current_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number}/{datetime.datetime.now().strftime('%A')}/"
         self.data = {}
+        self.load()
         self.data[self.week_number] = self.get_results(self.week_number)
-        self.data[self.week_number-1] = self.get_results(self.week_number-1)
-        self.data[self.week_number-2] = self.get_results(self.week_number-2)
         self.save()
 
     def send_notify(self, notification, notification_type=1, color='25dfdf'):
@@ -124,10 +124,16 @@ class GoalsHandler:
         found_files = len(result.split("\n"))-1
         self.send_notify(f'   Found {found_files} files within the remote')
 
+    def load(self):
+        # Save the JSON self.data
+        with open(self.path_data, 'r') as f:
+            self.data = {int(key): values for key, values in json.load(f).items()}
+            return self.data
+
     def save(self):
         # Save the JSON self.data
         with open(self.path_data, 'w') as f:
-            json.dump(self.data, f, indent=4)
+            json.dump({int(key): values for key, values in self.data.items()}, f, indent=4)
 
     @staticmethod
     def get_results_of_week(week_data: dict, subtract_required: bool = True):
@@ -146,6 +152,20 @@ class GoalsHandler:
 
         return result
 
+    def get_prior_results(self, week_num: Union[int, None] = None):
+        """
+        :param week_num: if None then the current week is used as reference
+        """
+        results = {key: 0 for key in req.keys()}
+        week_num = self.week_number if week_num is None else week_num 
+        
+        for week, items in self.data.items(): 
+            if week >= week_num:
+                continue
+            for key, value in self.get_results_of_week(items).items():
+                results[key] += value
+        return results
+
     def generate_overview(self):
         string = "\n\n" + " " * 30 + "Goals" + 30 * " " + "\n"
         string +=         " " * 26 + "---=======---" + 26 * " " + "\n\n"
@@ -155,7 +175,7 @@ class GoalsHandler:
 
         current_data = self.data[self.week_number]
         print(f"Current Week: {current_data}")
-        past_perf = self.get_results_of_week(self.data[self.week_number-1], True)
+        past_perf = self.get_prior_results()
         print(f"Past Performance: {past_perf}")
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -195,7 +215,7 @@ class GoalsHandler:
 
         self.send_notify("  Created and Saved overview file to the markdown file")
         self.send_to_drive(self.path_summery, self.path_summery_remote)
-        self.send_notify("  Uploaded Overview")
+        self.send_notify(f"  Uploaded Overview {format(past_perf)}")
 
         return string
 
@@ -212,3 +232,4 @@ if __name__ == "__main__":
         traceback.print_exc()
 
     handler.generate_overview()
+    handler.save()
