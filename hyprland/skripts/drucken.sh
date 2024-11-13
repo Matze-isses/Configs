@@ -25,6 +25,14 @@ fi
 REMOTE="drucken:/drucken/$remote_name"
 rclone delete "drucken:/drucken"
 
+source /opt/miniconda3/etc/profile.d/conda.sh
+conda activate pdftrafo 
+python ~/projects/small/pixelated.py "$input_pdf"
+
+filename="${input_pdf%.*}"
+extension="${input_pdf##*.}"
+input_pdf="${filename}_RESHAPE.${extension}"
+
 pdftk "$input_pdf" cat end-1 output reversed.pdf
 NUMPAGES=$(pdftk reversed.pdf dump_data | grep NumberOfPages | awk '{print $2}')
 PAGES_PER_SPLIT=50
