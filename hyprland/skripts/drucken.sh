@@ -1,10 +1,6 @@
 #!/bin/bash
 
 # Check if the input PDF file is provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 input.pdf"
-    exit 1
-fi
 
 input_pdf="$1"
 
@@ -27,7 +23,16 @@ rclone delete "drucken:/drucken"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate pdftrafo 
-python ~/configs/pixelated.py "$input_pdf"
+
+case $2 in
+  "-d")
+    python ~/projects/pdf_transform/pdf_transform/dense.py "$input_pdf"
+    ;;
+  *)
+    python ~/projects/pdf_transform/pdf_transform/pixelated.py "$input_pdf"
+    ;;
+esac
+
 
 filename="${input_pdf%.*}"
 extension="${input_pdf##*.}"
