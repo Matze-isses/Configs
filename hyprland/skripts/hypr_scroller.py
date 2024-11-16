@@ -8,28 +8,29 @@ def get_client_param(client_str):
     return {line[:line.find(":")]: line[line.find(":")+2:] for line in param}
 
 
-def get_active_window():
+def get_clients():
     args = ["hyprctl", "clients"]
     result = subprocess.run(args, capture_output=True)
-    output = str(result.stdout)
-    clients = output.split(r"\n\n")
-    print(clients[0])
-    active_window = get_client_param(clients[2])
-    print(active_window)
+    return str(result.stdout).split(r"\n\n")
 
+
+def get_active_window():
+    clients = get_clients()
+    active_window = get_client_param(clients[2])
+
+def get_number_clients(monitor: str = ""):
+    clients = get_clients()
+    summed = 0
+    for client in clients:
+        param = get_client_param(client)
+        if "monitor" not in param:
+            continue
+        summed += 1 if monitor == "" or param["monitor"] == monitor else 0
+    
+    return summed
 
 get_active_window()
-print("\n\n")
-socket_path = os.environ["XDG_RUNTIME_DIR"] + "/hypr/" + os.environ["HYPRLAND_INSTANCE_SIGNATURE"] + "/.socket.sock"
-print(socket_path)
+print(f"{get_number_clients()} {get_number_clients('1')} {get_number_clients('0')}")
 
-# Create a socket and connect to the path
-with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client_socket:
-    client_socket.connect(socket_path)
-
-    while True:
-        # Receive data from the socket
-        data = client_socket.recv(1024)
-        print(data.decode("utf-8"))
 
 

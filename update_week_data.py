@@ -177,7 +177,7 @@ class GoalsHandler:
         print(f"Current Week: {current_data}")
         past_perf = self.get_prior_results()
         print(f"Past Performance: {past_perf}")
-        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        todays_perf = {}
 
         for day in days:
             string += f"    {day+':':10s}\n"
@@ -202,6 +202,8 @@ class GoalsHandler:
                 done_before = past_perf[key]
                 past_perf[key] += today_done - value
                 string += f"        {key + ':':<12s} | {int(today_done):^ 4d} | {int(done_before):^9d} | {int(value):^ 8d} || {int(past_perf[key]):> 5d} |\n"
+                if day == str(datetime.datetime.now().strftime("%A")):
+                    todays_perf = past_perf.copy()
 
                 print("TODAY", today_done)
                 print("BEFORE", past_perf[key])
@@ -215,13 +217,32 @@ class GoalsHandler:
 
         self.send_notify("  Created and Saved overview file to the markdown file")
         self.send_to_drive(self.path_summery, self.path_summery_remote)
-        self.send_notify(f"  Uploaded Overview {format(past_perf)}")
+        self.send_notify(f"  Uploaded Overview {format(todays_perf)}")
 
         return string
+
+    def stats_now(self):
+        past_perf = self.get_prior_results()
+        current_data = self.data[self.week_number]
+        for day in days:
+            for key, value in req.items():
+                perf = 0 if day not in current_data or key not in current_data[day] else current_data[day][key]
+
+                today_done = sum(perf) if type(perf) is list else perf 
+                done_before = past_perf[key]
+                past_perf[key] += today_done - value
+
+                if day == str(datetime.datetime.now().strftime("%A")):
+                    self.send_notify("\n".join([f" {key}: {value}" for key, value in past_perf]))
+                    return
 
 
 if __name__ == "__main__":
     handler = GoalsHandler()
+    if sys.argv[0] == "just_print":
+        print(f"stats")
+        handler.stats_now()
+        sys.exit(1)
     try:
         selected_option = sys.argv[1]
         number = int(sys.argv[2])

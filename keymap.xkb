@@ -1203,17 +1203,9 @@ xkb_symbols "(unnamed)" {
         type= "ALPHABETIC",
         symbols[Group1]= [               y,               Y ]
     };
-    key <AD07> {
-        type= "CTRL+ALT",
-        symbols[Group1]= [               u,               U,                U000FC,               U000DC,                 u ]
-    };
     key <AD08> {
         type= "ALPHABETIC",
         symbols[Group1]= [               i,               I ]
-    };
-    key <AD09> {
-        type= "CTRL+ALT",
-        symbols[Group1]= [               o,               O,                U000F6,               U000D6, o]
     };
     key <AD10> {
         type= "ALPHABETIC",
@@ -1223,14 +1215,6 @@ xkb_symbols "(unnamed)" {
     key <AD12> {         [    bracketright,      braceright ] };
     key <RTRN> {         [          Return ] };
     key <LCTL> {         [       Control_L ] };
-    key <AC01> {
-        type= "CTRL+ALT",
-        symbols[Group1]= [               a,               A,                U000E4,               U000C4,                 a ]
-    };
-    key <AC02> {
-        type= "CTRL+ALT",
-        symbols[Group1]= [               s,               S,                U000DF,               U000DF,                 s ]
-    };
     key <AC03> {
         type= "ALPHABETIC",
         symbols[Group1]= [               d,               D ]
@@ -1303,6 +1287,22 @@ xkb_symbols "(unnamed)" {
     key <LALT> {         [           Alt_L,          Meta_L ] };
     key <SPCE> {         [           space ] };
     key <CAPS> {         [       Caps_Lock ] };
+    key <AD07> {
+        type= "SHIFT+ALT",
+        symbols[Group1]= [               u,               U,                U000FC,               U000DC,                 u ]
+    };
+    key <AD09> {
+        type= "CTRL+ALT",
+        symbols[Group1]= [               o,               O,                U000F6,               U000D6,                 o ]
+    };
+    key <AC01> {
+        type= "CTRL+ALT",
+        symbols[Group1]= [               a,               A,                U000E4,               U000C4,                 a ]
+    };
+    key <AC02> {
+        type= "CTRL+ALT",
+        symbols[Group1]= [               s,               S,                U000DF,               U000DF,                 s ]
+    };
     key <FK01> {
         type= "CTRL+ALT",
         symbols[Group1]= [              F1,              F1,              F1,              F1, XF86Switch_VT_1 ]
