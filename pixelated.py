@@ -40,7 +40,6 @@ class PageWrapper:
         start = 0
         length = 1
         results = []
-        print(f"white Rows {self.white_rows.shape}")
         for i, row in enumerate(self.white_rows.tolist()):
             if row == current_value:
                 length += 1
@@ -62,40 +61,58 @@ def process_pdf(pdf_path):
         sys.exit(1)
 
     new_doc = fitz.open()  # New PDF document
+    bin_count = 50
+    lengths_to_approx = []
 
     for page_num in range(len(doc)):
-        bin_count = 10
         page = PageWrapper(page_num, doc)
         sequences = page.get_sequences()
-        print(sequences)
+        lengths_to_approx += [seq.length for seq in sequences if not seq.white]
 
-        lengths_to_approx = np.array([seq.length for seq in sequences if seq.white])
-        hist, bin_edges = np.histogram(lengths_to_approx, bins=bin_count)
-        sorted_values = sorted([(hist, bin) for hist, bin in zip(hist, bin_edges)], key=lambda x: x[1], reverse=True)
-        cluster_centers = [edge for _, edge in sorted_values][-2:]
-        cluster_centers = np.sort(cluster_centers)
-        print("\n".join([f"{h}: {e}" for h, e in zip(hist, bin_edges)]))
+    hist, bin_edges = np.histogram(lengths_to_approx, bins=bin_count)
+    hist = np.array(hist) / max(hist)
+    most_often = -1
+    cap_above = -1
 
-        # Reduce lengths of sequences shorter than average by half
+    for i, item in enumerate(hist):
+        if item == 1 and most_often < 0:
+            most_often = bin_edges[i+1]
+        if most_often > 0 and item > 0.4 and cap_above < 0 and most_often < bin_edges[i]:
+            cap_above = bin_edges[i]
+
+    for page_num in range(len(doc)):
+        page = PageWrapper(page_num, doc)
+        sequences = page.get_sequences()
+
+        last_black_length = 0
         for seq in sequences:
             if not seq.white:
+                last_black_length = seq.length
                 continue
-            if seq.length <= cluster_centers[0]:
-                seq.set_new_length(max(1, seq.length // 5))
-            elif seq.length >= cluster_centers[1]:
-                seq.set_new_length(1)
 
-        total_removed_rows = sum(- seq.delta for seq in sequences if seq.delta < 0)
+            if last_black_length <= most_often or cap_above < most_often:
+                seq.set_new_length(3)
+                last_black_length = 0
+
+        total_removed_rows = sum(- seq.delta for seq in sequences)
         print(f"total_removed_rows {total_removed_rows}")
-        num_to_add_to = len([seq for seq in sequences if seq.delta == 0 and seq.white])
-        print(f"num_to_add_to {num_to_add_to} {total_removed_rows // num_to_add_to}")
+        num_to_add_to = len([seq for seq in sequences if seq.delta >= 0 and seq.white])
 
         if num_to_add_to != 0 and total_removed_rows != 0:
+            leftover = total_removed_rows - int(total_removed_rows / num_to_add_to)
+            portions = 12
+            print(f"LEFTOVER: {leftover}")
+
             for seq in sequences:
                 if seq.delta < 0 or not seq.white:
                     continue
 
-                seq.set_new_length(seq.length + total_removed_rows // num_to_add_to)
+                seq.set_new_length(seq.length + int(total_removed_rows / num_to_add_to))
+                if leftover >= portions:
+                    seq.set_new_length(seq.length + portions)
+                    leftover -= portions
+
+            print(f"num_to_add_to {num_to_add_to} {int(total_removed_rows / num_to_add_to)}")
 
         new_img_np = []
         for seq in sequences:
