@@ -27,7 +27,7 @@ rclone delete "drucken:/drucken"
 
 source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate pdftrafo 
-python ~/projects/small/pixelated.py "$input_pdf"
+python ~/configs/pixelated.py "$input_pdf"
 
 filename="${input_pdf%.*}"
 extension="${input_pdf##*.}"

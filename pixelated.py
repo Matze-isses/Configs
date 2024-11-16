@@ -26,7 +26,7 @@ class PageWrapper:
         # get data as array
         self.page = document.load_page(page_num)
 
-        pix = self.page.get_pixmap(colorspace=fitz.csRGB, dpi=180)
+        pix = self.page.get_pixmap(colorspace=fitz.csRGB, dpi=225)
         img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
         self.array = np.array(img)
         white_pixels = np.all(self.array >= np.array([250, 250, 250]), axis=2)
@@ -61,24 +61,43 @@ def process_pdf(pdf_path):
         sys.exit(1)
 
     new_doc = fitz.open()  # New PDF document
-    bin_count = 50
-    lengths_to_approx = []
+    lengths_to_approx_black = []
+    lengths_to_approx_white = []
 
     for page_num in range(len(doc)):
         page = PageWrapper(page_num, doc)
         sequences = page.get_sequences()
-        lengths_to_approx += [seq.length for seq in sequences if not seq.white]
+        lengths_to_approx_black += [seq.length for seq in sequences if not seq.white]
+        lengths_to_approx_white += [seq.length for seq in sequences if not seq.white]
 
-    hist, bin_edges = np.histogram(lengths_to_approx, bins=bin_count)
-    hist = np.array(hist) / max(hist)
-    most_often = -1
     cap_above = -1
 
+    bin_count = int(max(lengths_to_approx_black))
+    hist, bin_edges = np.histogram(lengths_to_approx_black, bins=bin_count)
+    hist = np.array(hist) / sum(hist)
+    running_portion = 0
+    cap_below = 0
+
     for i, item in enumerate(hist):
-        if item == 1 and most_often < 0:
-            most_often = bin_edges[i+1]
-        if most_often > 0 and item > 0.4 and cap_above < 0 and most_often < bin_edges[i]:
-            cap_above = bin_edges[i]
+        running_portion += item
+        if running_portion > 0.7:
+            cap_below = bin_edges[i]
+            break
+
+    print("ONE:", hist, "\n\n")
+    
+    bin_count = int(max(lengths_to_approx_white))
+    hist, bin_edges = np.histogram(lengths_to_approx_white, bins=bin_count)
+    hist = np.array(hist) / sum(hist)
+
+    print(hist) 
+
+    running_portion = 0
+    for i, item in enumerate(reversed(hist)):
+        running_portion += item 
+        if running_portion > 0.1:
+            cap_above = bin_edges[len(hist) - i]
+            break
 
     for page_num in range(len(doc)):
         page = PageWrapper(page_num, doc)
@@ -89,9 +108,12 @@ def process_pdf(pdf_path):
             if not seq.white:
                 last_black_length = seq.length
                 continue
-
-            if last_black_length <= most_often or cap_above < most_often:
+            
+            if last_black_length <= cap_below:
                 seq.set_new_length(3)
+                last_black_length = 0
+            elif seq.length > cap_above:
+                seq.set_new_length(5)
                 last_black_length = 0
 
         total_removed_rows = sum(- seq.delta for seq in sequences)
@@ -108,6 +130,7 @@ def process_pdf(pdf_path):
                     continue
 
                 seq.set_new_length(seq.length + int(total_removed_rows / num_to_add_to))
+
                 if leftover >= portions:
                     seq.set_new_length(seq.length + portions)
                     leftover -= portions
@@ -146,7 +169,7 @@ def process_pdf(pdf_path):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py your_file.pdf")
-        pdf_path = "/home/admin/projects/small/NumSDE2021_Skript.pdf"
+        pdf_path = "/home/admin/Downloads/FA2024_Skript.pdf"
     else:
         pdf_path = sys.argv[1]
     process_pdf(pdf_path)
