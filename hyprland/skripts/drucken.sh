@@ -40,7 +40,7 @@ input_pdf="${filename}_RESHAPE.${extension}"
 
 pdftk "$input_pdf" cat end-1 output reversed.pdf
 NUMPAGES=$(pdftk reversed.pdf dump_data | grep NumberOfPages | awk '{print $2}')
-PAGES_PER_SPLIT=50
+PAGES_PER_SPLIT=30
 
 # Create a directory to store split PDFs
 mkdir -p split_pdfs
