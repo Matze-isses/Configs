@@ -38,6 +38,8 @@ filename="${input_pdf%.*}"
 extension="${input_pdf##*.}"
 input_pdf="${filename}_RESHAPE.${extension}"
 
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -dQUIET -sOutputFile="$input_pdf" "$input_pdf"
 pdftk "$input_pdf" cat end-1 output reversed.pdf
 NUMPAGES=$(pdftk reversed.pdf dump_data | grep NumberOfPages | awk '{print $2}')
 PAGES_PER_SPLIT=30
