@@ -31,8 +31,8 @@ alias carlatsc='/home/admin/Carla-Simulator/v13_carla/CarlaUE4.sh'
 # export VGL_GLFLUSHTRIGGER=0
 # export VGL_READBACK=pbo
 # export VGL_SPOILLAST=0
-# export XDG_CURRENT_DESKTOP=Hyprland
-# export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_TYPE=wayland
 # export XDG_SESSION_DESKTOP=Hyprland
 
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -58,7 +58,7 @@ export CUDA_HOME=/opt/cuda/bin
 #
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 
-# export WLR_RENDERER_ALLOW_SOFTWARE=1
+export WLR_RENDERER_ALLOW_SOFTWARE=1
 # export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
 
 export PYDEVD_DISABLE_FILE_VALIDATION=1 
@@ -109,7 +109,7 @@ if [ $? -eq 0 ]; then
 else
     if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
         . "/opt/miniconda3/etc/profile.d/conda.sh"
-    else
+   else
         export PATH="/opt/miniconda3/bin:$PATH"
     fi
 fi
