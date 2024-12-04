@@ -29,7 +29,7 @@ case $2 in
     python ~/projects/pdf_transform/pdf_transform/dense.py "$input_pdf"
     ;;
   *)
-    python ~/projects/pdf_transform/pdf_transform/pixelated.py "$input_pdf"
+    python ~/projects/pdf_transform/pdf_transform/adjust_math.py "$input_pdf"
     ;;
 esac
 
@@ -39,7 +39,6 @@ extension="${input_pdf##*.}"
 input_pdf="${filename}_RESHAPE.${extension}"
 
 
-gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -dQUIET -sOutputFile="$input_pdf" "$input_pdf"
 pdftk "$input_pdf" cat end-1 output reversed.pdf
 NUMPAGES=$(pdftk reversed.pdf dump_data | grep NumberOfPages | awk '{print $2}')
 PAGES_PER_SPLIT=30

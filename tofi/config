@@ -7,9 +7,9 @@ outline-width = 0
 padding-left = 35%
 padding-top = 35%
 
-result-spacing = 25
-num-results = 5
-font = monospace
+result-spacing = 15
+num-results = 4
+font = Hurmit Nerd Font Mono
 
 background-color = #000A
 auto-accept-single = true
