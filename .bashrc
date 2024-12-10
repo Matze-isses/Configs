@@ -26,16 +26,17 @@ alias bank='/home/admin/projects/goals/bash_calling.sh'
 alias act_server='/home/admin/projects/act_server/start_client.sh'
 alias act_test='/home/admin/projects/act_server/start_client.sh -t'
 alias anki='QTWEBENGINE_CHROMIUM_FLAGS=“–no-sandbox” anki'
-alias carla='/home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
-alias carlatsc='~/Carla-Simulator/v13_carla/CarlaUE4.sh -RenderOffScreen'
+alias carla='QT_QPA_PLATFORM=xcb /home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
+alias carlatsc='QT_QPA_PLATFORM=xcb ~/Carla-Simulator/v13_carla/CarlaUE4.sh'
+alias carlaTSCRender='QT_QPA_PLATFORM=xcb ~/Carla-Simulator/v13_carla/CarlaUE4.sh -RenderOffScreen'
 
 # export VGL_ALLOWINDIRECT=1
 # export VGL_FORCEALPHA=1
 # export VGL_GLFLUSHTRIGGER=0
 # export VGL_READBACK=pbo
 # export VGL_SPOILLAST=0
-export XDG_CURRENT_DESKTOP=Hyprland
-export XDG_SESSION_TYPE=wayland
+# export XDG_CURRENT_DESKTOP=Hyprland
+# export XDG_SESSION_TYPE=wayland
 # export XDG_SESSION_DESKTOP=Hyprland
 
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -60,8 +61,8 @@ export CUDA_HOME=/opt/cuda/bin
 # export DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP=1
 #
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
-
 export WLR_RENDERER_ALLOW_SOFTWARE=1
+
 # export NCCL_DEBUG_FILE='/home/admin/hate_nvidia/log.out'
 
 export PYDEVD_DISABLE_FILE_VALIDATION=1 
