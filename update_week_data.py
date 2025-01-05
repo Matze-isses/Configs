@@ -10,7 +10,7 @@ import re
 import os
 
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-req = {"Laufen": 5, "Schreiben": 2}
+req = {"Laufen": 5, "Schreiben": 0}
 
 
 class GoalsHandler:
@@ -82,6 +82,7 @@ class GoalsHandler:
 
     def add_data(self, selected_option, number):
         weekday = str(datetime.datetime.now().strftime("%A"))
+        rev_days = list(reversed(days.copy()))
 
         if self.week_number not in self.data:
             if int(self.week_number)-1 in self.data:
@@ -96,10 +97,16 @@ class GoalsHandler:
                 "Requirements": {"Laufen": 5, "Schreiben": 4},
                 "week_before": perf_past
             }
-            self.current_data[weekday] = {}
+            day = ''
+            while day != weekday:
+                day = rev_days.pop()
+                self.current_data[weekday] = {}
 
         if weekday not in self.current_data:
-            self.current_data[weekday] = {}
+            day = ''
+            while day != weekday:
+                day = rev_days.pop()
+                self.current_data[weekday] = {}
 
         # Update the self.data
 

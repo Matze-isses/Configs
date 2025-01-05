@@ -1,0 +1,13 @@
+# This file was created by Fancontrol-GUI
+INTERVAL=10
+DEVPATH=hwmon0=devices/virtual/thermal/thermal_zone0/hwmon0 hwmon1=devices/pci0000:00/0000:00:1b.4/0000:04:00.0/nvme/nvme0/hwmon1 hwmon3=devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.4/1-10.4:1.0/0003:1E71:2011.0005 hwmon4=devices/pci0000:00/0000:00:14.0/usb1/1-10/1-10.3/1-10.3:1.1/0003:1E71:300E.0004 hwmon6=devices/platform/nct6683.2592 
+DEVNAME=hwmon0=acpitz hwmon1=nvme hwmon3=nzxtsmart2 hwmon4=kraken2023 hwmon6=nct6687 
+FCTEMPS=hwmon4/pwm1=hwmon4/temp1_input hwmon4/pwm2=hwmon0/temp1_input hwmon6/pwm1=hwmon1/temp1_input hwmon6/pwm2=hwmon1/temp1_input hwmon6/pwm3=hwmon1/temp1_input hwmon6/pwm4=hwmon0/temp1_input hwmon6/pwm5=hwmon0/temp1_input hwmon6/pwm6=hwmon0/temp1_input hwmon6/pwm7=hwmon0/temp1_input 
+FCFANS=hwmon4/pwm1=hwmon4/fan1_input hwmon4/pwm2=hwmon4/fan2_input hwmon6/pwm1=hwmon6/fan1_input hwmon6/pwm2=hwmon6/fan2_input hwmon6/pwm3=hwmon6/fan3_input hwmon6/pwm4=hwmon6/fan4_input hwmon6/pwm5=hwmon6/fan5_input hwmon6/pwm6=hwmon6/fan6_input hwmon6/pwm7=hwmon6/fan7_input 
+MINTEMP=hwmon4/pwm1=33 hwmon4/pwm2=32 hwmon6/pwm1=30 hwmon6/pwm2=30 hwmon6/pwm3=38 hwmon6/pwm4=32 hwmon6/pwm5=32 hwmon6/pwm6=32 hwmon6/pwm7=32 
+MAXTEMP=hwmon4/pwm1=100 hwmon4/pwm2=100 hwmon6/pwm1=100 hwmon6/pwm2=100 hwmon6/pwm3=100 hwmon6/pwm4=100 hwmon6/pwm5=100 hwmon6/pwm6=100 hwmon6/pwm7=100 
+MINSTART=hwmon4/pwm1=0 hwmon4/pwm2=255 hwmon6/pwm1=255 hwmon6/pwm2=255 hwmon6/pwm3=255 hwmon6/pwm4=255 hwmon6/pwm5=255 hwmon6/pwm6=255 hwmon6/pwm7=255 
+MINSTOP=hwmon4/pwm1=0 hwmon4/pwm2=0 hwmon6/pwm1=51 hwmon6/pwm2=75 hwmon6/pwm3=0 hwmon6/pwm4=0 hwmon6/pwm5=0 hwmon6/pwm6=0 hwmon6/pwm7=0 
+MINPWM=hwmon4/pwm1=0 hwmon4/pwm2=0 hwmon6/pwm1=51 hwmon6/pwm2=75 hwmon6/pwm3=0 hwmon6/pwm4=0 hwmon6/pwm5=0 hwmon6/pwm6=0 hwmon6/pwm7=0 
+MAXPWM=hwmon4/pwm1=255 hwmon4/pwm2=255 hwmon6/pwm1=255 hwmon6/pwm2=255 hwmon6/pwm3=255 hwmon6/pwm4=255 hwmon6/pwm5=255 hwmon6/pwm6=255 hwmon6/pwm7=255 
+AVERAGE=hwmon4/pwm1=3 hwmon4/pwm2=1 hwmon6/pwm1=1 hwmon6/pwm2=1 hwmon6/pwm3=3 hwmon6/pwm4=3 hwmon6/pwm5=3 hwmon6/pwm6=3 hwmon6/pwm7=3 
