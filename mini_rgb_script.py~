@@ -1,0 +1,44 @@
+import subprocess
+import sys
+import time
+
+def get_cpu_temp():
+    output = subprocess.check_output(["sensors"]).decode()
+    for line in output.split("\n"):
+        if "Package id 0:" in line:
+            temp_str = line.split()[3].strip("+°C")
+            return float(temp_str)
+    return 0.0
+
+def temp_to_color(temp_c):
+    min_temp, max_temp = 30.0, 60.0
+    top_red, top_blue, top_green = 60, 40, 25
+
+    temp_c = max(min_temp, min(temp_c, max_temp))
+    ratio = (temp_c - min_temp) / (max_temp - min_temp)
+    
+    r = (temp_c - top_blue)/(top_red - top_blue) * 200 if temp_c < top_red else 200
+    b = (temp_c - top_blue)/(top_blue - top_green) * 200 if temp_c < top_blue else 200 - r
+    g = 200 - b if temp_c > top_green else 200
+    return r, g, b
+
+def set_color_all(color_hex):
+    for i in range(5):
+        if i != 3:
+            subprocess.call(["openrgb", "-d", str(i), "-c", color_hex])
+
+
+if len(sys.argv) <= 1:  
+    print("Please add an argument (Color in Hex)")
+
+set_color_all(sys.argv[1])
+
+while sys.argv[1] == "temp":
+    t = get_cpu_temp()
+    r, g, b = temp_to_color(t)
+    color_hex = f"{r:02x}{g:02x}{b:02x}"
+    print(f"Temperature: {t}")
+    print(f"Color:       {color_hex}")
+    set_color_all(color_hex)
+    time.sleep(60)
+

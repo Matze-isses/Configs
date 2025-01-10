@@ -1,17 +1,17 @@
-541 OBS Studio
+567 OBS Studio
 424 PulseAudio Volume Control
-147 Google Chrome
-128 Kdenlive
-117 Firefox
-104 Volume Control
+153 Google Chrome
+132 Kdenlive
+125 Firefox
+123 Volume Control
 77 Firefox Web Browser
 24 Anki
-22 Android Studio
+24 Android Studio
+13 OpenRGB
 12 Electrum Bitcoin Wallet
 9 Tor Browser
 9 Shotwell
 5 GNU Image Manipulation Program
-4 OpenRGB
 3 Android Studio (Canary Branch)
 3 Okular
 3 kitty
@@ -41,3 +41,6 @@
 1 zamautosat
 1 Pix
 1 Fancontrol-GUI
+1 ghostwriter
+1 Master PDF Editor 5
+1 VLC media player

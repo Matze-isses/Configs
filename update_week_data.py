@@ -10,7 +10,7 @@ import re
 import os
 
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-req = {"Laufen": 5, "Schreiben": 0}
+req = {"Laufen": 5, "Schreiben": 1}
 
 
 class GoalsHandler:
@@ -18,8 +18,8 @@ class GoalsHandler:
         self.path_data = base_dir + "goal_data.json"
         self.path_summery = base_dir + "Summary.md"
         self.week_number = int(datetime.datetime.now().isocalendar()[1])
-        self.path_summery_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number}/Summary.md"
-        self.path_current_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number}/{datetime.datetime.now().strftime('%A')}/"
+        self.path_summery_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number:02d}/Summary.md"
+        self.path_current_remote = f"remote:/Ziele/Nachweise/Matthis/Week-{self.week_number:02d}/{datetime.datetime.now().strftime('%A')}/"
         self.data = {}
         self.load()
         self.data[self.week_number] = self.get_results(self.week_number)
@@ -54,7 +54,7 @@ class GoalsHandler:
 
     def get_results(self, week_number: int):
         # Define the path to the current week's directory on Google Drive
-        week_path = f'remote:/Ziele/Nachweise/Matthis/Week-{week_number}/'
+        week_path = f'remote:/Ziele/Nachweise/Matthis/Week-{week_number:02d}/'
 
         if week_number not in self.data:
             self.data[week_number] = self.data
@@ -240,12 +240,14 @@ class GoalsHandler:
                 past_perf[key] += today_done - value
 
                 if day == str(datetime.datetime.now().strftime("%A")):
-                    self.send_notify("\n".join([f" {key}: {value}" for key, value in past_perf]))
+                    self.send_notify("\n".join([f" {key}: {value}" for key, value in past_perf.items()]))
                     return
 
 
 if __name__ == "__main__":
     handler = GoalsHandler()
+    if len(sys.argv) == 1:
+        handler.stats_now()
     if sys.argv[0] == "just_print":
         print(f"stats")
         handler.stats_now()

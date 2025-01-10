@@ -1,14 +1,11 @@
 # ~/.bashrc
-source ~/.bash_completion
-if [ -f ~/.bash_completion ]; then
-    . ~/.bash_completion
-fi
 
 alias drucken='~/configs/hyprland/skripts/drucken.sh'
 alias scrape='conda activate serv && python -m webscraper'
 alias ipv6_1='sudo sysctl net.ipv6.conf.all.disable_ipv6=1'
 alias ipv6_0='sudo sysctl net.ipv6.conf.all.disable_ipv6=0'
 alias paper_server='mpvpaper "*" -o "input-ipc-server=/tmp/mpv-socket"'
+alias color='python ~/configs/mini_rgb_script.py'
 
 alias chrome='/home/admin/.conda/envs/serv/bin/python /home/admin/projects/custom_browser/annoying_yt.py'
 alias piprequirements='cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install '
@@ -27,7 +24,7 @@ alias act_server='/home/admin/projects/act_server/start_client.sh'
 alias act_test='/home/admin/projects/act_server/start_client.sh -t'
 alias anki='QTWEBENGINE_CHROMIUM_FLAGS=“–no-sandbox” anki'
 alias carla='QT_QPA_PLATFORM=xcb /home/admin/Carla-Simulator/carla15/CarlaUE4.sh'
-alias carlatsc='QT_QPA_PLATFORM=xcb ~/Carla-Simulator/v13_carla/CarlaUE4.sh'
+alias carlatsc='QT_QPA_PLATFORM=eglfs ~/Carla-Simulator/v13_carla/CarlaUE4.sh'
 alias carlaTSCRender='QT_QPA_PLATFORM=xcb ~/Carla-Simulator/v13_carla/CarlaUE4.sh -RenderOffScreen'
 
 # export VGL_ALLOWINDIRECT=1
